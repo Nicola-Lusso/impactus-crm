@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Impactus CRM</title>
+<!-- Supabase SDK — caricato prima di tutto il resto -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
@@ -469,6 +471,52 @@ label{font-size:11px;color:var(--text3);}
   .cal-evt{font-size:0;padding:3px;}
   .cal-evt .dot{width:6px;height:6px;}
 }
+
+/* ===== CANALI CHAT ===== */
+.canali-layout{display:grid;grid-template-columns:280px 1fr;height:calc(100vh - var(--topbar-h) - 56px);gap:0;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden}
+.canali-sidebar{border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden}
+.canali-sidebar-head{padding:16px 16px 12px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);flex-shrink:0}
+.canali-search{padding:10px 12px;border-bottom:1px solid var(--border);flex-shrink:0}
+.canali-search input{font-size:12.5px;padding:8px 12px}
+#canaliList{flex:1;overflow-y:auto}
+.canale-item{padding:13px 16px;cursor:pointer;border-bottom:1px solid var(--border);transition:background .15s;display:flex;align-items:center;gap:11px}
+.canale-item:hover{background:var(--bg3)}
+.canale-item.active{background:rgba(180,0,224,.08);border-right:3px solid var(--imp-purple)}
+.canale-av{width:38px;height:38px;border-radius:50%;background:var(--imp-purple);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:#fff;flex-shrink:0}
+.canale-info{flex:1;min-width:0}
+.canale-name{font-size:13.5px;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.canale-last{font-size:11.5px;color:var(--text3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px}
+.canale-unread{background:var(--imp-purple);color:#fff;font-size:10px;font-weight:800;padding:2px 6px;border-radius:99px;flex-shrink:0}
+.canali-chat-area{display:flex;flex-direction:column;overflow:hidden}
+.chat-header{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:14px;flex-shrink:0;background:var(--bg2)}
+.chat-header-av{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;color:#fff;flex-shrink:0}
+.chat-header-info{flex:1}
+.chat-header-name{font-size:15px;font-weight:800;color:var(--text)}
+.chat-header-sub{font-size:12px;color:var(--text3);margin-top:2px}
+.chat-tabs{display:flex;gap:2px;padding:0 20px;border-bottom:1px solid var(--border);background:var(--bg2);flex-shrink:0}
+.chat-tab{padding:10px 18px;font-size:13px;font-weight:600;color:var(--text3);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;background:none;border-top:none;border-left:none;border-right:none;font-family:inherit}
+.chat-tab.active{color:var(--imp-purple);border-bottom-color:var(--imp-purple)}
+.chat-body{flex:1;overflow-y:auto;padding:20px}
+.chat-footer{padding:14px 20px;border-top:1px solid var(--border);background:var(--bg2);flex-shrink:0}
+.chat-input-row{display:flex;gap:10px;align-items:flex-end}
+.chat-input-row textarea{flex:1;min-height:42px;max-height:120px;resize:none;padding:10px 14px;font-size:14px;border-radius:12px;line-height:1.4}
+.msg-bubble{display:flex;gap:10px;margin-bottom:14px;align-items:flex-start}
+.msg-bubble.mine{flex-direction:row-reverse}
+.msg-av{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#fff;flex-shrink:0;margin-top:2px}
+.msg-content{max-width:70%}
+.msg-name{font-size:11px;font-weight:700;color:var(--text3);margin-bottom:4px}
+.msg-bubble.mine .msg-name{text-align:right}
+.msg-text{background:var(--surface);border-radius:14px;padding:10px 14px;font-size:13.5px;color:var(--text);line-height:1.5;word-break:break-word}
+.msg-bubble.mine .msg-text{background:var(--imp-purple);color:#fff}
+.msg-time{font-size:10.5px;color:var(--text3);margin-top:4px}
+.msg-bubble.mine .msg-time{text-align:right}
+/* Task nel canale */
+.canale-task-item{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:13px 16px;margin-bottom:8px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:border-color .15s}
+.canale-task-item:hover{border-color:var(--border2)}
+.canale-task-check{width:20px;height:20px;border-radius:50%;border:2px solid var(--border2);display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:pointer;transition:all .15s}
+.canale-task-check.done{background:var(--green);border-color:var(--green)}
+@media(max-width:768px){.canali-layout{grid-template-columns:1fr}.canali-sidebar{display:none}.canali-sidebar.mobile-show{display:flex;position:fixed;inset:0;z-index:99;background:var(--bg2)}}
+
 </style>
 </head>
 <body>
@@ -578,6 +626,13 @@ label{font-size:11px;color:var(--text3);}
       <button class="nav-item" onclick="nav('iva',this)">
         <span class="nav-icon" data-ic="receipt"></span>IVA & Fiscale
         <span class="nav-badge" id="ivaBadge" style="display:none">0</span>
+      </button>
+    </div>
+    <div class="nav-section">
+      <div class="nav-label">Team</div>
+      <button class="nav-item" id="nav-canali" onclick="nav('canali',this)">
+        <span class="nav-icon" data-ic="chat"></span>Canali cliente
+        <span class="nav-badge" id="chatBadge" style="display:none">0</span>
       </button>
     </div>
     <div class="nav-section" id="navImpostazioni">
@@ -716,8 +771,20 @@ label{font-size:11px;color:var(--text3);}
           <button class="btn btn-primary btn-sm" onclick="openModal('modalTask')"><span class="ic" data-ic="plus"></span>Nuova task</button>
         </div>
       </div>
-      <div class="chip-row" id="taskFiltriPrio"></div>
-      <div class="task-board" id="taskBoard"></div>
+      <div class="tab-strip" style="margin-bottom:18px">
+        <button class="tab-btn active" id="taskTabKanban" onclick="switchTaskView('kanban',this)">Kanban</button>
+        <button class="tab-btn" id="taskTabCal" onclick="switchTaskView('calendario',this)">Calendario</button>
+      </div>
+      <!-- KANBAN VIEW -->
+      <div id="taskViewKanban">
+        <div class="chip-row" id="taskFiltriPrio"></div>
+        <div class="task-board" id="taskBoard"></div>
+      </div>
+      <!-- CALENDARIO VIEW -->
+      <div id="taskViewCalendario" style="display:none">
+        <div style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:16px">Prossimi 7 giorni</div>
+        <div id="taskCalBody"></div>
+      </div>
     </div>
 
     <!-- ===== CONTRATTI ===== -->
@@ -901,6 +968,33 @@ label{font-size:11px;color:var(--text3);}
     </div>
 
     <!-- ===== IMPOSTAZIONI ===== -->
+    <!-- ===== CANALI CLIENTE ===== -->
+    <div id="page-canali" class="tab-section">
+      <div class="canali-layout">
+        <!-- Sidebar lista canali -->
+        <div class="canali-sidebar">
+          <div class="canali-sidebar-head">
+            <span style="font-size:14px;font-weight:800;color:var(--text)">Canali cliente</span>
+            <button class="btn btn-ghost btn-xs" onclick="openModal('modalNuovoCanale')"><span class="ic" data-ic="plus" style="width:14px;height:14px"></span></button>
+          </div>
+          <div class="canali-search">
+            <input type="text" placeholder="Cerca cliente..." id="canaliSearch" oninput="filterCanali(this.value)" style="font-size:13px">
+          </div>
+          <div id="canaliList"></div>
+        </div>
+        <!-- Area chat -->
+        <div class="canali-chat-area" id="canaliChatArea">
+          <div class="canali-empty-state">
+            <div style="text-align:center;color:var(--text3);padding:60px 20px">
+              <div style="font-size:40px;margin-bottom:16px">💬</div>
+              <div style="font-size:16px;font-weight:700;color:var(--text2);margin-bottom:8px">Seleziona un canale</div>
+              <div style="font-size:13.5px">Ogni cliente ha la sua stanza dedicata con task e chat del team</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div id="page-impostazioni" class="tab-section">
       <div class="section-header"><h2><span class="ic" data-ic="settings"></span>Impostazioni</h2><span class="badge badge-purple">Solo Admin</span></div>
       <div class="grid-2">
@@ -1044,27 +1138,32 @@ label{font-size:11px;color:var(--text3);}
 
 <!-- Modal Contratto -->
 <div class="modal-bg" id="modalContratto">
-  <div class="modal">
-    <div class="modal-title"><span class="ic" data-ic="contract"></span>Nuovo Contratto</div>
+  <div class="modal" style="width:820px">
+    <div class="modal-title"><span class="ic" data-ic="contract"></span><span id="contModalTitle">Nuovo Contratto</span></div>
 
-    <!-- Quick: cliente + importo sulla stessa riga -->
+    <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--imp-purple);margin-bottom:12px">Cliente e durata</div>
     <div class="form-row">
       <div>
-        <label>Cliente</label>
+        <label>Cliente *</label>
         <select id="cCliente"></select>
         <button class="btn btn-ghost btn-xs" style="margin-top:6px;width:100%" onclick="quickAddCliente()"><span class="ic" data-ic="user-plus" style="width:13px;height:13px"></span>Nuovo cliente veloce</button>
       </div>
-      <div><label>Importo mensile (€)</label><input type="number" id="cImporto" placeholder="es. 900"></div>
-    </div>
-
-    <!-- Quick: data inizio + durata in mesi → calcola scadenza auto -->
-    <div class="form-row three">
       <div>
-        <label>Data inizio</label>
-        <input type="date" id="cInizio" onchange="calcScadenzaContratto()">
+        <label>Canale acquisizione</label>
+        <select id="cCanaleSorgente">
+          <option value="">— Seleziona —</option>
+          <option value="referente">Referente / Passaparola</option>
+          <option value="campagna">Campagna pubblicitaria</option>
+          <option value="social">Social organico</option>
+          <option value="sito">Sito web</option>
+          <option value="altro">Altro</option>
+        </select>
       </div>
+    </div>
+    <div class="form-row three">
+      <div><label>Data inizio</label><input type="date" id="cInizio" onchange="calcScadenzaContratto()"></div>
       <div>
-        <label>Durata (mesi)</label>
+        <label>Durata</label>
         <select id="cDurata" onchange="calcScadenzaContratto()">
           <option value="">Seleziona...</option>
           <option value="1">1 mese</option>
@@ -1074,49 +1173,133 @@ label{font-size:11px;color:var(--text3);}
           <option value="custom">Personalizzata</option>
         </select>
       </div>
-      <div>
-        <label>Scadenza (calcolata auto)</label>
-        <input type="date" id="cScadenza">
-      </div>
+      <div><label>Scadenza</label><input type="date" id="cScadenza" onchange="updateContrattoRiepilogo()"></div>
     </div>
 
-    <div class="form-row">
-      <div><label>Gestione Social</label><select id="cSocial"><option value="no">No</option><option value="si">Sì</option></select></div>
-      <div><label>Gestione Campagne</label><select id="cCampagne"><option value="no">No</option><option value="si">Sì</option></select></div>
-    </div>
+    <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--imp-purple);margin:16px 0 12px">Servizi e importo</div>
     <div class="form-row single">
+      <div>
+        <label>Servizi accettati</label>
+        <div id="serviziCheckbox" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px"></div>
+        <input type="text" id="cServizioCustom" placeholder="Aggiungi servizio personalizzato..." style="font-size:12.5px">
+        <button class="btn btn-ghost btn-xs" style="margin-top:6px" onclick="aggiungiServizioCustom()">+ Aggiungi</button>
+      </div>
+    </div>
+    <div class="form-row">
+      <div><label>Importo mensile (€)</label><input type="number" id="cImporto" placeholder="es. 900" oninput="updateContrattoRiepilogo()"></div>
       <div><label>Stato rinnovo</label>
         <select id="cRinnovo"><option value="da_contattare">Da contattare</option><option value="in_trattativa">In trattativa</option><option value="confermato">Confermato</option></select>
       </div>
     </div>
-    <div class="form-row single"><div><label>Note</label><textarea id="cNote" placeholder="Dettagli, condizioni particolari..."></textarea></div></div>
+    <div class="form-row">
+      <div><label>Gestione Social</label><select id="cSocial"><option value="no">No</option><option value="si">Sì</option></select></div>
+      <div><label>Gestione Campagne</label><select id="cCampagne"><option value="no">No</option><option value="si">Sì</option></select></div>
+    </div>
 
-    <!-- Riepilogo automatico -->
+    <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--imp-purple);margin:16px 0 12px">Piano di pagamento</div>
+    <div class="form-row three">
+      <div>
+        <label>Tipo pagamento</label>
+        <select id="cPagamentoTipo" onchange="buildPianoPagamento()">
+          <option value="mensile">Mensile</option>
+          <option value="trimestrale">Trimestrale</option>
+          <option value="semestrale">Semestrale</option>
+          <option value="annuale">Annuale</option>
+          <option value="personalizzato">Personalizzato</option>
+        </select>
+      </div>
+      <div><label>Importo per rata (€)</label><input type="number" id="cPagamentoRata" placeholder="auto" oninput="buildPianoPagamento()"></div>
+      <div><label>Prima scadenza</label><input type="date" id="cPagamentoPrima" onchange="buildPianoPagamento()"></div>
+    </div>
+    <div id="pianoPagamentoPreview" style="background:var(--bg3);border-radius:10px;padding:14px;margin-bottom:14px;display:none">
+      <div style="font-size:12px;font-weight:700;color:var(--text2);margin-bottom:10px">Anteprima rate</div>
+      <div id="ratePreview"></div>
+    </div>
+
+    <div class="form-row single"><div><label>Note</label><textarea id="cNote" placeholder="Dettagli, condizioni particolari..."></textarea></div></div>
     <div id="contrattoRiepilogo" style="display:none;background:var(--green-bg);border:1px solid rgba(0,232,122,.2);border-radius:10px;padding:12px;margin-top:4px;font-size:13px;color:var(--green)"></div>
 
     <div class="modal-footer">
       <button class="btn btn-ghost" onclick="closeModal('modalContratto')">Annulla</button>
-      <button class="btn btn-primary" onclick="salvaContratto()">Salva contratto</button>
+      <button class="btn btn-primary" id="contSaveBtn" onclick="salvaContratto()">Salva contratto</button>
     </div>
   </div>
 </div>
 
-<!-- Modal Cliente -->
+<!-- Modal Cliente FULL -->
 <div class="modal-bg" id="modalCliente">
-  <div class="modal">
-    <div class="modal-title"><span class="ic" data-ic="users"></span>Nuovo Cliente</div>
-    <div class="form-row">
-      <div><label>Nome cliente / azienda</label><input type="text" id="clNome"></div>
-      <div><label>Provenienza / canale</label><input type="text" id="clProvenienza" placeholder="Es. Meta Ads, BNI, Referral"></div>
+  <div class="modal" style="width:760px">
+    <div class="modal-title"><span class="ic" data-ic="users"></span><span id="cliModalTitle">Nuovo Cliente / Lead</span></div>
+
+    <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--imp-purple);margin-bottom:12px">Dati anagrafici</div>
+    <div class="form-row three">
+      <div><label>Nome *</label><input type="text" id="clNome" placeholder="Es. Marco"></div>
+      <div><label>Cognome</label><input type="text" id="clCognome" placeholder="Es. Rossi"></div>
+      <div><label>Azienda (opzionale)</label><input type="text" id="clAzienda" placeholder="Es. Rossi Srl"></div>
     </div>
     <div class="form-row">
+      <div><label>Telefono</label><input type="tel" id="clTelefono" placeholder="+39 333 1234567"></div>
+      <div><label>Email</label><input type="email" id="clEmail" placeholder="mario@email.it"></div>
+    </div>
+
+    <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--imp-purple);margin:16px 0 12px">Classificazione</div>
+    <div class="form-row">
+      <div>
+        <label>Settore</label>
+        <select id="clSettore">
+          <option value="">— Seleziona settore —</option>
+          <option>Edilizia</option>
+          <option>Bar e Ristorazione</option>
+          <option>Odontoiatrico</option>
+          <option>Sportivo</option>
+          <option>Sanitario</option>
+          <option>Abbigliamento</option>
+          <option>Artigianato</option>
+          <option>Commercianti</option>
+          <option>Immobiliare</option>
+          <option>Benessere/Estetica</option>
+          <option>Fisioterapeutico</option>
+          <option>Automotive</option>
+          <option value="_custom">Altro (specifica)</option>
+        </select>
+      </div>
       <div><label>Anno acquisizione</label><input type="number" id="clAnno" value="2026"></div>
-      <div><label>Email / telefono</label><input type="text" id="clContatto"></div>
     </div>
-    <div class="form-row single"><div><label>Note</label><textarea id="clNote"></textarea></div></div>
+    <div id="clSettoreCustomWrap" style="display:none;margin-bottom:14px">
+      <label>Specifica settore</label>
+      <input type="text" id="clSettoreCustom" placeholder="Es. Farmaceutico, Legale...">
+    </div>
+
+    <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--imp-purple);margin:16px 0 12px">Provenienza lead</div>
+    <div class="form-row">
+      <div>
+        <label>Fonte</label>
+        <select id="clProvTipo" onchange="toggleProvTipo()">
+          <option value="">— Seleziona —</option>
+          <option value="campagna">Campagna pubblicitaria</option>
+          <option value="referente">Referente / Passaparola</option>
+          <option value="altro">Altro</option>
+        </select>
+      </div>
+      <div id="clProvCampagnaWrap" style="display:none">
+        <label>Campagna</label>
+        <select id="clProvCampagna"></select>
+      </div>
+      <div id="clProvReferenteWrap" style="display:none">
+        <label>Nome referente</label>
+        <input type="text" id="clProvReferente" placeholder="Es. Luigi Bianchi">
+      </div>
+      <div id="clProvAltroWrap" style="display:none">
+        <label>Specifica provenienza</label>
+        <input type="text" id="clProvAltro" placeholder="Es. Fiera, LinkedIn...">
+      </div>
+    </div>
+
+    <div class="form-row single" style="margin-top:4px"><div><label>Note</label><textarea id="clNote" placeholder="Informazioni aggiuntive, interessi, budget..."></textarea></div></div>
+
     <div class="modal-footer">
       <button class="btn btn-ghost" onclick="closeModal('modalCliente')">Annulla</button>
-      <button class="btn btn-primary" onclick="salvaCliente()">Salva cliente</button>
+      <button class="btn btn-primary" id="cliSaveBtn" onclick="salvaCliente()">Salva cliente</button>
     </div>
   </div>
 </div>
@@ -1434,12 +1617,16 @@ function calcFat2026(){
 // ============================
 // PROFILI TEAM IMPACTUS
 // ============================
+// TEAM statico — usato solo per la griglia login
 const TEAM=[
-  {id:'nicola', name:'Nicola', role:'Admin', color:'#CC00FF', initials:'N', password:'impactus2026', isAdmin:true},
-  {id:'liliana', name:'Liliana', role:'Manager', color:'#00AAFF', initials:'L', password:'impactus2026', isAdmin:false},
-  {id:'boris', name:'Boris', role:'Manager', color:'#00C9A7', initials:'B', password:'impactus2026', isAdmin:false},
-  {id:'edoardo', name:'Edoardo', role:'Collaboratore', color:'#FF8C00', initials:'E', password:'impactus2026', isAdmin:false},
+  {id:'nicola', name:'Nicola', role:'Admin', color:'#CC00FF', initials:'N', isAdmin:true},
+  {id:'liliana', name:'Liliana', role:'Manager', color:'#00AAFF', initials:'L', isAdmin:false},
+  {id:'boris', name:'Boris', role:'Manager', color:'#00C9A7', initials:'B', isAdmin:false},
+  {id:'edoardo', name:'Edoardo', role:'Collaboratore', color:'#FF8C00', initials:'E', isAdmin:false},
 ];
+
+// Profili reali da Supabase — popolati dopo il login con gli UUID reali
+let TEAM_PROFILES = [];
 
 let currentUser = null;
 
@@ -1469,6 +1656,7 @@ async function loadFromSupabase(){
   try{
     const uid=currentUser.id;
     const [
+      {data:profiles},
       {data:clienti},
       {data:preventivi},
       {data:contratti},
@@ -1482,21 +1670,31 @@ async function loadFromSupabase(){
       {data:ivaConfigData},
       {data:obiettivi}
     ] = await Promise.all([
-      supabase.from('clienti').select('*').order('created_at',{ascending:false}),
-      supabase.from('preventivi').select('*').order('created_at',{ascending:false}),
-      supabase.from('contratti').select('*').order('created_at',{ascending:false}),
-      supabase.from('campagne').select('*').order('created_at',{ascending:false}),
-      supabase.from('deleghe').select('*').order('created_at',{ascending:false}),
-      supabase.from('collaboratori').select('*').order('created_at',{ascending:false}),
-      supabase.from('tasks').select('*').order('created_at',{ascending:false}),
-      supabase.from('eventi').select('*').order('date',{ascending:true}),
-      supabase.from('notifiche').select('*').eq('user_id',uid).order('created_at',{ascending:false}).limit(50),
-      supabase.from('iva_pagamenti').select('*').order('created_at',{ascending:false}),
-      supabase.from('iva_config').select('*').limit(1),
-      supabase.from('obiettivi').select('*').eq('anno',2026).order('mese',{ascending:true})
+      sbClient.from('profiles').select('*'),
+      sbClient.from('clienti').select('*').order('created_at',{ascending:false}),
+      sbClient.from('preventivi').select('*').order('created_at',{ascending:false}),
+      sbClient.from('contratti').select('*').order('created_at',{ascending:false}),
+      sbClient.from('campagne').select('*').order('created_at',{ascending:false}),
+      sbClient.from('deleghe').select('*').order('created_at',{ascending:false}),
+      sbClient.from('collaboratori').select('*').order('created_at',{ascending:false}),
+      sbClient.from('tasks').select('*').order('created_at',{ascending:false}),
+      sbClient.from('eventi').select('*').order('date',{ascending:true}),
+      sbClient.from('notifiche').select('*').eq('user_id',uid).order('created_at',{ascending:false}).limit(50),
+      sbClient.from('iva_pagamenti').select('*').order('created_at',{ascending:false}),
+      sbClient.from('iva_config').select('*').limit(1),
+      sbClient.from('obiettivi').select('*').eq('anno',2026).order('mese',{ascending:true})
     ]);
 
-    // Mappa snake_case → camelCase per compatibilità con il CRM esistente
+    // Popola TEAM_PROFILES con UUID reali da Supabase
+    TEAM_PROFILES=(profiles||[]).map(p=>({
+      id:p.id, // UUID reale Supabase
+      name:p.name,
+      role:p.role,
+      color:p.color||'#CC00FF',
+      initials:p.initials||p.name[0].toUpperCase(),
+      isAdmin:p.is_admin
+    }));
+
     db.clienti=(clienti||[]).map(c=>({...c,id:c.id,nome:c.nome,provenienza:c.provenienza,anno:c.anno,contatto:c.contatto,note:c.note}));
     db.preventivi=(preventivi||[]).map(p=>({...p,id:p.id,clienteId:p.cliente_id,proposta:p.proposta,importo:p.importo,ivaRegime:p.iva_regime,ivaAliq:p.iva_aliq,ivaImporto:p.iva_importo,importoConIva:p.importo_con_iva,stato:p.stato,tipo:p.tipo,data:p.data,note:p.note,delegaDesc:p.delega_desc,delegaCollab:p.delega_collab,delegaCosto:p.delega_costo,delegaIvaRegime:p.delega_iva_regime,delegaIvaAliq:p.delega_iva_aliq,delegaIvaImporto:p.delega_iva_importo,delegaCostoTotale:p.delega_costo_totale}));
     db.contratti=(contratti||[]).map(c=>({...c,id:c.id,clienteId:c.cliente_id,importo:c.importo,inizio:c.inizio,scadenza:c.scadenza,social:c.social,campagne:c.campagne,rinnovo:c.rinnovo,note:c.note}));
@@ -1504,7 +1702,20 @@ async function loadFromSupabase(){
     db.deleghe=(deleghe||[]).map(d=>({...d,id:d.id,collaboratore:d.collaboratore,descrizione:d.descrizione,clienteId:d.cliente_id,mese:d.mese,importo:d.importo,ivaRegime:d.iva_regime,ivaAliq:d.iva_aliq,ivaImporto:d.iva_importo,importoTotale:d.importo_totale,tipo:d.tipo}));
     db.collaboratori=(collaboratori||[]).map(c=>({...c,id:c.id,nome:c.nome,ruolo:c.ruolo,piva:c.piva,regimeIva:c.regime_iva,regimeIvaAliq:c.regime_iva_aliq}));
     db.tasks=(tasks||[]).map(t=>({...t,id:t.id,title:t.title,description:t.description,assignedTo:t.assigned_to,clienteId:t.cliente_id,priority:t.priority,status:t.status,due:t.due_date,progress:t.progress,tags:t.tags}));
-    db.appuntamenti=(eventi||[]).map(e=>({...e,id:e.id,title:e.title,date:e.date,timeS:e.time_start,timeE:e.time_end,type:e.type,clienteId:e.cliente_id,note:e.note,partecipanti:e.partecipanti||[]}));
+    db.appuntamenti=(eventi||[]).map(e=>({
+      id:e.id,
+      titolo:e.title,          // calendar usa .titolo
+      data:e.date,             // calendar usa .data
+      oraInizio:e.time_start,
+      oraFine:e.time_end,
+      color:e.type||'purple',
+      clienteId:e.cliente_id,
+      luogo:'',
+      note:e.note,
+      partecipanti:e.partecipanti||[],
+      createdBy:e.created_by,
+      reminder:'60',
+    }));
     db.notifiche=(notifiche||[]).map(n=>({...n,id:n.id,text:n.text,type:n.type,icon:'🔔',time:n.created_at,read:n.read,user:n.user_id}));
     db.ivaPagamenti=(ivaPagamenti||[]).map(p=>({...p,periodKey:p.periodo,data:p.data,importo:p.importo}));
     if(ivaConfigData&&ivaConfigData[0])db.ivaConfig={aliquota:ivaConfigData[0].aliquota,periodo:ivaConfigData[0].periodicita,base:'accettati'};
@@ -1534,11 +1745,11 @@ function loadDB(){
 async function dbSaveCliente(c){
   const row={nome:c.nome,provenienza:c.provenienza||null,anno:c.anno||null,contatto:c.contatto||null,note:c.note||null,created_by:currentUser.id};
   if(c._dbId){
-    const {error}=await supabase.from('clienti').update(row).eq('id',c._dbId);
+    const {error}=await sbClient.from('clienti').update(row).eq('id',c._dbId);
     if(error)throw error;
     return c._dbId;
   }else{
-    const {data,error}=await supabase.from('clienti').insert(row).select().single();
+    const {data,error}=await sbClient.from('clienti').insert(row).select().single();
     if(error)throw error;
     return data.id;
   }
@@ -1550,10 +1761,10 @@ async function dbSaveCliente(c){
 async function dbSavePreventivo(p){
   const row={cliente_id:p.clienteId||null,proposta:p.proposta,importo:p.importo||0,iva_regime:p.ivaRegime||'22',iva_aliq:p.ivaAliq||22,iva_importo:p.ivaImporto||0,importo_con_iva:p.importoConIva||0,stato:p.stato||'Da fare',tipo:p.tipo||'ricorrente',data:p.data||null,note:p.note||null,delega_desc:p.delegaDesc||null,delega_collab:p.delegaCollab||null,delega_costo:p.delegaCosto||0,delega_iva_regime:p.delegaIvaRegime||'22',delega_iva_aliq:p.delegaIvaAliq||22,delega_iva_importo:p.delegaIvaImporto||0,delega_costo_totale:p.delegaCostoTotale||0,created_by:currentUser.id};
   if(p._dbId){
-    const {error}=await supabase.from('preventivi').update(row).eq('id',p._dbId);
+    const {error}=await sbClient.from('preventivi').update(row).eq('id',p._dbId);
     if(error)throw error;return p._dbId;
   }else{
-    const {data,error}=await supabase.from('preventivi').insert(row).select().single();
+    const {data,error}=await sbClient.from('preventivi').insert(row).select().single();
     if(error)throw error;return data.id;
   }
 }
@@ -1564,10 +1775,10 @@ async function dbSavePreventivo(p){
 async function dbSaveContratto(c){
   const row={cliente_id:c.clienteId||null,importo:c.importo||0,inizio:c.inizio||null,scadenza:c.scadenza,social:c.social||false,campagne:c.campagne||false,rinnovo:c.rinnovo||'da_contattare',note:c.note||null,created_by:currentUser.id};
   if(c._dbId){
-    const {error}=await supabase.from('contratti').update(row).eq('id',c._dbId);
+    const {error}=await sbClient.from('contratti').update(row).eq('id',c._dbId);
     if(error)throw error;return c._dbId;
   }else{
-    const {data,error}=await supabase.from('contratti').insert(row).select().single();
+    const {data,error}=await sbClient.from('contratti').insert(row).select().single();
     if(error)throw error;return data.id;
   }
 }
@@ -1578,10 +1789,10 @@ async function dbSaveContratto(c){
 async function dbSaveTask(t){
   const row={title:t.title,description:t.description||null,assigned_to:t.assignedTo||null,cliente_id:t.clienteId||null,priority:t.priority||'media',status:t.status||'todo',due_date:t.due||null,progress:t.progress||0,tags:t.tags||null,created_by:currentUser.id};
   if(t._dbId){
-    const {error}=await supabase.from('tasks').update(row).eq('id',t._dbId);
+    const {error}=await sbClient.from('tasks').update(row).eq('id',t._dbId);
     if(error)throw error;return t._dbId;
   }else{
-    const {data,error}=await supabase.from('tasks').insert(row).select().single();
+    const {data,error}=await sbClient.from('tasks').insert(row).select().single();
     if(error)throw error;return data.id;
   }
 }
@@ -1592,10 +1803,10 @@ async function dbSaveTask(t){
 async function dbSaveDelega(d){
   const row={collaboratore:d.collaboratore,descrizione:d.descrizione||null,cliente_id:d.clienteId||null,mese:d.mese,importo:d.importo||0,iva_regime:d.ivaRegime||'22',iva_aliq:d.ivaAliq||22,iva_importo:d.ivaImporto||0,importo_totale:d.importoTotale||0,tipo:d.tipo||'piva',created_by:currentUser.id};
   if(d._dbId){
-    const {error}=await supabase.from('deleghe').update(row).eq('id',d._dbId);
+    const {error}=await sbClient.from('deleghe').update(row).eq('id',d._dbId);
     if(error)throw error;return d._dbId;
   }else{
-    const {data,error}=await supabase.from('deleghe').insert(row).select().single();
+    const {data,error}=await sbClient.from('deleghe').insert(row).select().single();
     if(error)throw error;return data.id;
   }
 }
@@ -1606,10 +1817,10 @@ async function dbSaveDelega(d){
 async function dbSaveCampagna(c){
   const row={nome:c.nome,canale:c.canale||'Meta Ads',spesa:c.spesa||0,guadagno:c.guadagno||0,lead:c.lead||0,in_target:c.inTarget||0,convertiti:c.convertiti||0,note:c.note||null,created_by:currentUser.id};
   if(c._dbId){
-    const {error}=await supabase.from('campagne').update(row).eq('id',c._dbId);
+    const {error}=await sbClient.from('campagne').update(row).eq('id',c._dbId);
     if(error)throw error;return c._dbId;
   }else{
-    const {data,error}=await supabase.from('campagne').insert(row).select().single();
+    const {data,error}=await sbClient.from('campagne').insert(row).select().single();
     if(error)throw error;return data.id;
   }
 }
@@ -1619,7 +1830,7 @@ async function dbSaveCampagna(c){
 // ============================
 async function dbSaveCollaboratore(c){
   const row={nome:c.nome,ruolo:c.ruolo||null,piva:c.piva||null,regime_iva:c.regimeIva||'22',regime_iva_aliq:c.regimeIvaAliq||'22'};
-  const {data,error}=await supabase.from('collaboratori').insert(row).select().single();
+  const {data,error}=await sbClient.from('collaboratori').insert(row).select().single();
   if(error)throw error;return data.id;
 }
 
@@ -1627,10 +1838,10 @@ async function dbSaveCollaboratore(c){
 // REALTIME — ascolta cambiamenti live
 // ============================
 function startRealtimeListeners(){
-  if(!supabase)return;
+  if(!sbClient)return;
 
   // Tasks — aggiornamento live tra utenti
-  supabase.channel('tasks-changes')
+  sbClient.channel('tasks-changes')
     .on('postgres_changes',{event:'INSERT',schema:'public',table:'tasks'},(payload)=>{
       const t=payload.new;
       if(t.assigned_to===currentUser.id){
@@ -1644,14 +1855,24 @@ function startRealtimeListeners(){
     .subscribe();
 
   // Notifiche live
-  supabase.channel('notifiche-'+currentUser.id)
+  sbClient.channel('notifiche-'+currentUser.id)
     .on('postgres_changes',{event:'INSERT',schema:'public',table:'notifiche',filter:`user_id=eq.${currentUser.id}`},(payload)=>{
       const n=payload.new;
       db.notifiche.unshift({id:n.id,text:n.text,type:n.type,icon:'🔔',time:n.created_at,read:false,user:n.user_id});
-      renderNotifBadge();
+      renderNotifBadge();renderNotifPanel();
       if('Notification' in window && Notification.permission==='granted'){
         new Notification('Impactus CRM',{body:n.text});
       }
+    })
+    .subscribe();
+
+  // Eventi calendario live
+  sbClient.channel('eventi-changes')
+    .on('postgres_changes',{event:'*',schema:'public',table:'eventi'},(payload)=>{
+      loadFromSupabase().then(()=>{
+        if(currentPage==='calendario')renderCalendario();
+        buildCalBadge();
+      });
     })
     .subscribe();
 
@@ -1775,20 +1996,12 @@ function startKeepAlive(){
 // ============================
 const SUPABASE_URL = 'https://ctexrnfdlzaedpdfdahj.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_sDJOuCxwheRt3Yl254itog_l-CNMV0r';
-let supabase = null;
+// SDK Supabase caricato nell'<head> come window.supabase
+// Usiamo nome diverso per evitare conflitto con la variabile globale dell'SDK
+const sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 async function initSupabase(){
-  // Carica SDK Supabase da CDN
-  if(!window.supabase){
-    await new Promise((resolve,reject)=>{
-      const s=document.createElement('script');
-      s.src='https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js';
-      s.onload=resolve;s.onerror=reject;
-      document.head.appendChild(s);
-    });
-  }
-  supabase=window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-  return supabase;
+  return sbClient;
 }
 
 // ============================
@@ -1797,15 +2010,14 @@ async function initSupabase(){
 function renderProfileGrid(){
   const grid=document.getElementById('profileGrid');
   if(!grid)return;
-  // Mostriamo ancora le card visive ma il login usa Supabase Auth
   const profiles=[
-    {id:'nicola',name:'Nicola',role:'Admin',color:'#CC00FF',initials:'N'},
-    {id:'liliana',name:'Liliana',role:'Manager',color:'#00AAFF',initials:'L'},
-    {id:'boris',name:'Boris',role:'Manager',color:'#00C9A7',initials:'B'},
-    {id:'edoardo',name:'Edoardo',role:'Collaboratore',color:'#FF8C00',initials:'E'},
+    {id:'nicola',name:'Nicola',role:'Admin',color:'#CC00FF',initials:'N',email:'nicolusso@gmail.com'},
+    {id:'liliana',name:'Liliana',role:'Manager',color:'#00AAFF',initials:'L',email:'lilianalusso92@icloud.com'},
+    {id:'boris',name:'Boris',role:'Manager',color:'#00C9A7',initials:'B',email:'bisailboris@gmail.com'},
+    {id:'edoardo',name:'Edoardo',role:'Collaboratore',color:'#FF8C00',initials:'E',email:'edosanna20@gmail.com'},
   ];
   grid.innerHTML=profiles.map(u=>`
-    <div class="profile-card" id="pc_${u.id}" onclick="selectProfile('${u.id}','${u.name}')">
+    <div class="profile-card" id="pc_${u.id}" onclick="selectProfile('${u.id}','${u.name}','${u.email}')">
       <div class="profile-av" style="background:${u.color}">${u.initials}</div>
       <div class="profile-card-name">${u.name}</div>
       <div class="profile-card-role">${u.role}</div>
@@ -1814,9 +2026,9 @@ function renderProfileGrid(){
 
 let selectedProfileName=null;
 let selectedProfileEmail=null;
-function selectProfile(id,name){
+function selectProfile(id,name,email){
   selectedProfileName=name;
-  selectedProfileEmail=id+'@impactus.it';
+  selectedProfileEmail=email;
   document.querySelectorAll('.profile-card').forEach(c=>c.classList.remove('selected'));
   const card=document.getElementById('pc_'+id);
   if(card)card.classList.add('selected');
@@ -1844,14 +2056,14 @@ async function doLogin(){
 
   try{
     await initSupabase();
-    const {data,error}=await supabase.auth.signInWithPassword({
+    const {data,error}=await sbClient.auth.signInWithPassword({
       email: selectedProfileEmail,
       password: pwd
     });
     if(error)throw error;
 
     // Carica il profilo dal DB
-    const {data:profile}=await supabase
+    const {data:profile}=await sbClient
       .from('profiles')
       .select('*')
       .eq('id',data.user.id)
@@ -1884,7 +2096,7 @@ async function doLogin(){
 }
 
 async function doLogout(){
-  if(supabase)await supabase.auth.signOut();
+  if(supabase)await sbClient.auth.signOut();
   currentUser=null;
   selectedProfileEmail=null;
   selectedProfileName=null;
@@ -1910,7 +2122,7 @@ async function requestNotifPermission(){
 // ============================
 let currentPage='dashboard';
 function nav(page,btn){
-  document.querySelectorAll('#page-dashboard,#page-calendario,#page-tasks,#page-contratti,#page-preventivi,#page-clienti,#page-campagne,#page-finanziario,#page-iva,#page-impostazioni').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('#page-dashboard,#page-calendario,#page-tasks,#page-contratti,#page-preventivi,#page-clienti,#page-campagne,#page-finanziario,#page-iva,#page-impostazioni,#page-canali').forEach(s=>s.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(b=>b.classList.remove('active'));
   const el=document.getElementById('page-'+page);
   if(el)el.classList.add('active');
@@ -1976,7 +2188,7 @@ function initApp(){
 function renderPage(p){
   if(p==='dashboard')renderDashboard();
   else if(p==='calendario')renderCalendario();
-  else if(p==='tasks')renderTasks();
+  else if(p==='tasks'){renderTasks();}
   else if(p==='contratti')renderContratti();
   else if(p==='preventivi')renderPreventivi();
   else if(p==='clienti'){renderClienti();renderLeadAnalisi();}
@@ -1984,6 +2196,7 @@ function renderPage(p){
   else if(p==='finanziario')renderFinanziario();
   else if(p==='iva')renderIva();
   else if(p==='impostazioni')renderImpostazioni();
+  else if(p==='canali'){renderCanali();}
   hydrateIcons();
 }
 function renderSubPage(id){
@@ -2008,7 +2221,13 @@ function isScadenzaEntro30(scadenza){const d=daysLeft(scadenza);return d>=0&&d<=
 function isAcc(s){return(s||'').toUpperCase().includes('ACCETAT');}
 function prevAccettati(cId){return db.preventivi.filter(p=>p.clienteId===cId&&isAcc(p.stato));}
 function valoreTotale(cId){return prevAccettati(cId).reduce((s,p)=>s+(p.importo||0),0);}
-function getTeamMember(id){return TEAM.find(u=>u.id===id)||{name:'—',color:'#555',initials:'?'};}
+function getTeamMember(id){
+  // Cerca prima nei profili reali Supabase (UUID)
+  const real=TEAM_PROFILES.find(u=>u.id===id);
+  if(real)return real;
+  // Fallback al TEAM statico (ID locale)
+  return TEAM.find(u=>u.id===id)||{name:'—',color:'#555',initials:'?'};
+}
 
 function badgeStato(s){
   const v=(s||'').toUpperCase();
@@ -2220,6 +2439,12 @@ function filterMyTasks(){
   renderTasks();
 }
 
+function renderKanban(){
+  const filterBar=document.getElementById('taskFilterBar');
+  if(filterBar){filterBar.style.display='';}
+  renderTasks();
+}
+
 function renderTasks(){
   // Priorità chips
   const prios=['tutti','alta','media','bassa'];
@@ -2278,7 +2503,8 @@ function openTaskDetail(id){
   const t=db.tasks.find(x=>x.id===id);
   if(!t)return;
   const member=getTeamMember(t.assignedTo);
-  const teamOpts=TEAM.map(u=>`<option value="${u.id}" ${u.id===t.assignedTo?'selected':''}>${u.name}</option>`).join('');
+  const teamSource2=TEAM_PROFILES.length>0?TEAM_PROFILES:TEAM;
+  const teamOpts=teamSource2.map(u=>`<option value="${u.id}" ${u.id===t.assignedTo?'selected':''}>${u.name}</option>`).join('');
   const clientiOpts='<option value="">— nessuno —</option>'+db.clienti.map(c=>`<option value="${c.id}" ${c.id===t.clienteId?'selected':''}>${c.nome}</option>`).join('');
   document.getElementById('taskDetailContent').innerHTML=`
     <div class="modal-title">${t.title||'Task'}</div>
@@ -2313,14 +2539,23 @@ function openTaskDetail(id){
     </div>
   `;
   document.getElementById('taskDetailSave').onclick=()=>saveTaskDetail(id);
-  document.getElementById('taskDetailDelete').onclick=()=>{if(confirm('Eliminare questa task?')){db.tasks=db.tasks.filter(x=>x.id!==id);saveDB();closeModal('modalTaskDetail');renderTasks();buildTaskBadge();}};
+  document.getElementById('taskDetailDelete').onclick=async()=>{
+    if(!confirm('Eliminare questa task?'))return;
+    try{
+      await sbClient.from('tasks').delete().eq('id',id);
+      db.tasks=db.tasks.filter(x=>x.id!==id&&x._dbId!==id);
+      closeModal('modalTaskDetail');renderTasks();buildTaskBadge();
+      toast('Task eliminata','','info');
+    }catch(e){toast('Errore',e.message,'alert');}
+  };
   openModal('modalTaskDetail');
 }
 
-function saveTaskDetail(id){
-  const t=db.tasks.find(x=>x.id===id);
+async function saveTaskDetail(id){
+  const t=db.tasks.find(x=>x.id===id||x._dbId===id);
   if(!t)return;
   const prevAssign=t.assignedTo;
+  const prevStatus=t.status;
   t.title=document.getElementById('td_title').value;
   t.assignedTo=document.getElementById('td_assign').value;
   t.clienteId=document.getElementById('td_cliente').value;
@@ -2330,18 +2565,23 @@ function saveTaskDetail(id){
   t.progress=parseInt(document.getElementById('td_progress').value)||0;
   t.description=document.getElementById('td_desc').value;
   t.updatedAt=new Date().toISOString();
-  // Notifica se cambio assegnatario
-  if(prevAssign!==t.assignedTo){
-    const newMember=getTeamMember(t.assignedTo);
-    addNotif(`Task "${t.title}" assegnata a ${newMember.name}`, 'info', '📌');
-  }
-  if(t.status==='done'){
-    addNotif(`Task completata: "${t.title}"`, 'success', '✅');
-  }
-  closeModal('modalTaskDetail');
-  saveDB();
-  renderTasks();
-  buildTaskBadge();
+  try{
+    await sbClient.from('tasks').update({
+      title:t.title,assigned_to:t.assignedTo,cliente_id:t.clienteId||null,
+      status:t.status,priority:t.priority,due_date:t.due||null,
+      progress:t.progress,description:t.description
+    }).eq('id',id);
+    if(prevAssign!==t.assignedTo){
+      const nm=getTeamMember(t.assignedTo);
+      addNotif('Task "'+t.title+'" assegnata a '+nm.name,'info','pin');
+      await sbClient.from('notifiche').insert({user_id:t.assignedTo,text:currentUser.name+' ti ha assegnato: "'+t.title+'"',type:'info',urgent:true});
+    }
+    if(t.status==='done'&&prevStatus!=='done'){
+      addNotif('Task completata: "'+t.title+'"','success','check');
+    }
+    closeModal('modalTaskDetail');renderTasks();buildTaskBadge();renderDashboard();
+    toast('Task aggiornata',t.title,'success');
+  }catch(e){toast('Errore salvataggio',e.message,'alert');}
 }
 
 async function salvaTask(){
@@ -2358,7 +2598,7 @@ async function salvaTask(){
       // Salva notifica su Supabase per l'altro utente
       const teamMember=getTeamMember(assignedTo);
       if(teamMember&&teamMember.dbId){
-        await supabase.from('notifiche').insert({user_id:teamMember.dbId,text:`${currentUser.name} ti ha assegnato: "${title}"`,type:'info',urgent:true});
+        await sbClient.from('notifiche').insert({user_id:teamMember.dbId,text:`${currentUser.name} ti ha assegnato: "${title}"`,type:'info',urgent:true});
       }
     }
     closeModal('modalTask');renderTasks();buildTaskBadge();
@@ -2428,9 +2668,12 @@ function renderContrattiTable(list){
 function filterContratti(q){
   renderContrattiTable(db.contratti.filter(c=>getClienteNome(c.clienteId).toLowerCase().includes(q.toLowerCase())));
 }
-function aggiornaRinnovo(id,val){
-  const c=db.contratti.find(x=>x.id===id);
-  if(c){c.rinnovo=val;buildAlertBadge();saveDB();}
+async function aggiornaRinnovo(id,val){
+  const c=db.contratti.find(x=>x.id===id||x._dbId===id);
+  if(!c)return;
+  c.rinnovo=val;buildAlertBadge();
+  try{await sbClient.from('contratti').update({rinnovo:val}).eq('id',id);}
+  catch(e){console.warn('aggiornaRinnovo',e.message);}
 }
 function buildAlertBadge(){
   const n=db.contratti.filter(c=>isScadenzaEntro30(c.scadenza)&&c.rinnovo==='da_contattare').length;
@@ -2497,19 +2740,26 @@ function renderPrevTable(list){
     </tr>`;
   }).join('');
 }
-function eliminaPrev(id){if(confirm('Eliminare questo preventivo?')){db.preventivi=db.preventivi.filter(p=>p.id!==id);saveDB();renderPreventivi();renderDashboard();buildIvaBadge();}}
+async function eliminaPrev(id){
+  if(!confirm('Eliminare questo preventivo?'))return;
+  try{
+    await sbClient.from('preventivi').delete().eq('id',id);
+    db.preventivi=db.preventivi.filter(p=>p.id!==id&&p._dbId!==id);
+    renderPreventivi();renderDashboard();buildIvaBadge();
+    toast('Preventivo eliminato','','info');
+  }catch(e){toast('Errore',e.message,'alert');}
+}
 
 // Cambio stato inline (un clic, niente prompt)
-function aggiornaStatoPrev(id,val){
-  const p=db.preventivi.find(x=>x.id===id);
+async function aggiornaStatoPrev(id,val){
+  const p=db.preventivi.find(x=>x.id===id||x._dbId===id);
   if(!p)return;
   const wasAcc=isAcc(p.stato);
   p.stato=val;
-  saveDB();
-  renderPreventivi();
-  renderDashboard();
-  buildIvaBadge();
-  if(isAcc(val)&&!wasAcc) toast('Preventivo accettato 🎉', `${getClienteNome(p.clienteId)} — l'IVA è stata aggiornata`,'success');
+  renderPreventivi();renderDashboard();buildIvaBadge();
+  try{await sbClient.from('preventivi').update({stato:val}).eq('id',id);}
+  catch(e){console.warn('aggiornaStatoPrev',e.message);}
+  if(isAcc(val)&&!wasAcc) toast('Preventivo accettato!',getClienteNome(p.clienteId)+' — IVA aggiornata','success');
 }
 
 // Modifica preventivo esistente
@@ -2661,7 +2911,14 @@ function renderCampagne(){
     </tr>`;
   }).join('');
 }
-function eliminaCampagna(id){if(confirm('Eliminare?')){db.campagne=db.campagne.filter(c=>c.id!==id);saveDB();renderCampagne();}}
+async function eliminaCampagna(id){
+  if(!confirm('Eliminare?'))return;
+  try{
+    await sbClient.from('campagne').delete().eq('id',id);
+    db.campagne=db.campagne.filter(c=>c.id!==id&&c._dbId!==id);
+    renderCampagne();toast('Campagna eliminata','','info');
+  }catch(e){toast('Errore',e.message,'alert');}
+}
 
 // ============================
 // FINANZIARIO
@@ -2878,7 +3135,9 @@ function populateSelects(){
   ['dCollab','delCollab'].forEach(id=>{const el=document.getElementById(id);if(el)el.innerHTML='<option value="">— nessuno —</option>'+collOpts;});
   // Selects con opzione "nessuno"
   ['tCliente','appCliente','fatCliente'].forEach(id=>{const el=document.getElementById(id);if(el)el.innerHTML='<option value="">— nessuno —</option>'+opts;});
-  const teamOpts=TEAM.map(u=>`<option value="${u.id}">${u.name}</option>`).join('');
+  // Select assegnatario task — usa UUID reali da Supabase
+  const teamSource=TEAM_PROFILES.length>0?TEAM_PROFILES:TEAM;
+  const teamOpts=teamSource.map(u=>`<option value="${u.id}">${u.name}</option>`).join('');
   const tAs=document.getElementById('tAssegna');
   if(tAs)tAs.innerHTML=teamOpts;
 }
@@ -3077,7 +3336,7 @@ function editDelega(id){
 async function eliminaDelega(id){
   if(!confirm('Eliminare questo pagamento?'))return;
   try{
-    await supabase.from('deleghe').delete().eq('id',id);
+    await sbClient.from('deleghe').delete().eq('id',id);
     db.deleghe=db.deleghe.filter(x=>x.id!==id&&x._dbId!==id);
     renderPagTerzi();toast('Pagamento eliminato','','success');
   }catch(e){toast('Errore eliminazione',e.message,'alert');}
@@ -3105,7 +3364,7 @@ async function salvaCollab(){
 async function eliminaCollab(id){
   if(!confirm('Eliminare questo collaboratore?'))return;
   try{
-    await supabase.from('collaboratori').delete().eq('id',id);
+    await sbClient.from('collaboratori').delete().eq('id',id);
     db.collaboratori=db.collaboratori.filter(x=>x.id!==id&&x._dbId!==id);
     renderImpostazioni();populateSelects();
     toast('Collaboratore eliminato','','success');
@@ -3299,7 +3558,9 @@ function openAppuntamento(id, presetDate){
   const a=id?db.appuntamenti.find(x=>x.id===id):null;
   appSelPart = a ? [...(a.partecipanti||[])] : (currentUser?[currentUser.id]:[]);
   appSelColor = a ? (a.color||'purple') : 'purple';
-  pg.innerHTML=TEAM.map(u=>`<div class="part-chip ${appSelPart.includes(u.id)?'on':''}" data-u="${u.id}" onclick="toggleAppPart('${u.id}')"><span class="part-av" style="background:${u.color}">${u.initials}</span>${u.name}</div>`).join('');
+  // Usa TEAM_PROFILES con UUID reali Supabase
+  const teamSource=TEAM_PROFILES.length>0?TEAM_PROFILES:TEAM;
+  pg.innerHTML=teamSource.map(u=>`<div class="part-chip ${appSelPart.includes(u.id)?'on':''}" data-u="${u.id}" onclick="toggleAppPart('${u.id}')"><span class="part-av" style="background:${u.color}">${u.initials}</span>${u.name}</div>`).join('');
   // ricolora dots in base a appSelColor
   pickAppColor(appSelColor);
 
@@ -3322,53 +3583,74 @@ function toggleAppPart(uid){
   if(appSelPart.includes(uid))appSelPart=appSelPart.filter(x=>x!==uid);else appSelPart.push(uid);
   document.querySelector(`#appPartecipanti .part-chip[data-u="${uid}"]`)?.classList.toggle('on');
 }
-function salvaAppuntamento(){
+async function salvaAppuntamento(){
   const titolo=document.getElementById('appTitolo').value.trim();
   if(!titolo){toast('Manca il titolo','Dai un nome all\'appuntamento','warn');return;}
   const data=document.getElementById('appData').value;
   if(!data){toast('Manca la data','Scegli un giorno','warn');return;}
   const id=document.getElementById('appId').value;
+  const luogo=document.getElementById('appLuogo').value||'';
+  const noteVal=document.getElementById('appNote').value||'';
   const obj={
-    titolo,
-    data,
-    oraInizio:document.getElementById('appOraInizio').value,
-    oraFine:document.getElementById('appOraFine').value,
-    clienteId:document.getElementById('appCliente').value,
-    luogo:document.getElementById('appLuogo').value,
-    note:document.getElementById('appNote').value,
-    color:appSelColor,
-    reminder:document.getElementById('appReminder').value,
+    titolo,data,
+    oraInizio:document.getElementById('appOraInizio').value||null,
+    oraFine:document.getElementById('appOraFine').value||null,
+    clienteId:document.getElementById('appCliente').value||null,
+    luogo,note:noteVal,
+    color:appSelColor||'purple',
+    reminder:document.getElementById('appReminder').value||'60',
     partecipanti:[...appSelPart],
   };
-  let isNew=true;
-  if(id){
-    const idx=db.appuntamenti.findIndex(x=>x.id===id);
-    if(idx>=0){db.appuntamenti[idx]={...db.appuntamenti[idx],...obj};isNew=false;}
-  }else{
-    obj.id=uid(); obj.createdBy=currentUser.id;
-    db.appuntamenti.push(obj);
-  }
-  // Notifica partecipanti (tranne se stesso)
   const dataLbl=fmtDate(data)+(obj.oraInizio?' alle '+obj.oraInizio:'');
-  obj.partecipanti.forEach(pid=>{
-    if(pid===currentUser.id)return;
-    addNotif(`${currentUser.name} ti ha invitato a "${titolo}" — ${dataLbl}`, 'info', '📅', pid);
-  });
-  closeModal('modalAppuntamento');
-  saveDB();
-  renderCalendario();
-  buildCalBadge();
-  toast(isNew?'Appuntamento creato':'Appuntamento aggiornato', `${titolo} · ${dataLbl}`,'success');
+  try{
+    const row={
+      title:obj.titolo,date:obj.data,
+      time_start:obj.oraInizio||null,time_end:obj.oraFine||null,
+      type:obj.color||'purple',
+      cliente_id:obj.clienteId||null,
+      note:(luogo?'Luogo: '+luogo+(noteVal?'\n'+noteVal:''):noteVal)||null,
+      partecipanti:obj.partecipanti,
+      created_by:currentUser.id
+    };
+    let isNew=true;
+    if(id){
+      const {error}=await sbClient.from('eventi').update(row).eq('id',id);
+      if(error)throw error;
+      const idx=db.appuntamenti.findIndex(x=>x.id===id);
+      if(idx>=0){db.appuntamenti[idx]={...db.appuntamenti[idx],...obj,id};isNew=false;}
+    }else{
+      const {data:saved,error}=await sbClient.from('eventi').insert(row).select().single();
+      if(error)throw error;
+      obj.id=saved.id;obj.createdBy=currentUser.id;
+      db.appuntamenti.push(obj);
+    }
+    const notifPromises=obj.partecipanti
+      .filter(pid=>pid&&pid!==currentUser.id)
+      .map(pid=>sbClient.from('notifiche').insert({
+        user_id:pid,
+        text:currentUser.name+' ti ha invitato: "'+titolo+'" il '+dataLbl,
+        type:'info',urgent:true
+      }));
+    if(notifPromises.length)await Promise.all(notifPromises);
+    addNotif('Evento '+(isNew?'creato':'aggiornato')+': "'+titolo+'"','success','cal');
+    closeModal('modalAppuntamento');renderCalendario();buildCalBadge();
+    toast(isNew?'Appuntamento creato':'Aggiornato',titolo+' - '+dataLbl,'success');
+  }catch(e){console.error('[salvaAppuntamento]',e);toast('Errore salvataggio',e.message,'alert');}
 }
-function eliminaAppuntamento(){
+async function eliminaAppuntamento(){
   const id=document.getElementById('appId').value;
   if(!id)return;
   if(!confirm('Eliminare questo appuntamento?'))return;
-  db.appuntamenti=db.appuntamenti.filter(x=>x.id!==id);
-  closeModal('modalAppuntamento');
-  saveDB();renderCalendario();buildCalBadge();
-  toast('Appuntamento eliminato','','info');
+  try{
+    const {error}=await sbClient.from('eventi').delete().eq('id',id);
+    if(error)throw error;
+    db.appuntamenti=db.appuntamenti.filter(x=>x.id!==id);
+    closeModal('modalAppuntamento');renderCalendario();buildCalBadge();
+    toast('Appuntamento eliminato','','info');
+  }catch(e){toast('Errore eliminazione',e.message,'alert');}
 }
+
+
 
 // ============================
 // IVA & FISCALE
@@ -3537,20 +3819,951 @@ function eliminaFattura(id){
 }
 
 // ============================
+
+
+// ============================================================
+// SETTORI
+// ============================================================
+// (see below)
+
+// ============================================================
+// SERVIZI PREDEFINITI CONTRATTO
+// ============================================================
+// (see below)
+// (moved below)
+
+// (see below)
+
+// (see below)
+
+// (see below)
+
+// ============================================================
+// CLIENTE — funzioni nuove
+// ============================================================
+function toggleProvTipo(){
+  const v=document.getElementById('clProvTipo').value;
+  document.getElementById('clProvCampagnaWrap').style.display=v==='campagna'?'block':'none';
+  document.getElementById('clProvReferenteWrap').style.display=v==='referente'?'block':'none';
+  document.getElementById('clProvAltroWrap').style.display=v==='altro'?'block':'none';
+}
+
+function populateProvCampagne(){
+  const sel=document.getElementById('clProvCampagna');
+  if(!sel)return;
+  sel.innerHTML='<option value="">— seleziona campagna —</option>'+
+    db.campagne.map(c=>`<option value="${c.id}">${c.nome} (${c.canale})</option>`).join('');
+}
+
+// Aggiorna salvaCliente con nuovi campi
+async function salvaCliente(){
+  const nome=document.getElementById('clNome').value.trim();
+  if(!nome){toast('Campo obbligatorio','Inserisci almeno il nome','warn');return;}
+  const cognome=document.getElementById('clCognome').value.trim();
+  const azienda=document.getElementById('clAzienda').value.trim();
+  const telefono=document.getElementById('clTelefono').value.trim();
+  const email=document.getElementById('clEmail').value.trim();
+  const settoreRaw=document.getElementById('clSettore').value;
+  const settore=settoreRaw==='_custom'?(document.getElementById('clSettoreCustom').value.trim()||'Altro'):settoreRaw;
+  const provTipo=document.getElementById('clProvTipo').value;
+  let provenienza='';
+  if(provTipo==='campagna'){
+    const cId=document.getElementById('clProvCampagna').value;
+    const cam=db.campagne.find(x=>x.id===cId);
+    provenienza=cam?cam.nome+' ('+cam.canale+')':'Campagna';
+  }else if(provTipo==='referente'){
+    provenienza='Referente: '+(document.getElementById('clProvReferente').value.trim()||'—');
+  }else if(provTipo==='altro'){
+    provenienza=document.getElementById('clProvAltro').value.trim()||'Altro';
+  }
+  const c={
+    nome:nome+(cognome?' '+cognome:''),
+    cognome,azienda,telefono,email,settore,provenienza,
+    anno:parseInt(document.getElementById('clAnno').value)||new Date().getFullYear(),
+    note:document.getElementById('clNote').value,
+    contatto:email||telefono
+  };
+  try{
+    const newId=await dbSaveCliente(c);
+    c.id=newId;c._dbId=newId;
+    db.clienti.unshift(c);
+    closeModal('modalCliente');
+    renderClienti();populateSelects();
+    toast('Cliente aggiunto',c.nome+(c.azienda?' · '+c.azienda:''),'success');
+    resetCliModal();
+  }catch(e){toast('Errore salvataggio',e.message,'alert');}
+}
+
+function resetCliModal(){
+  ['clNome','clCognome','clAzienda','clTelefono','clEmail','clNote','clProvReferente','clProvAltro'].forEach(id=>{
+    const el=document.getElementById(id);if(el)el.value='';
+  });
+  const clAnno=document.getElementById('clAnno');if(clAnno)clAnno.value=new Date().getFullYear();
+  const clSettore=document.getElementById('clSettore');if(clSettore)clSettore.value='';
+  const clProv=document.getElementById('clProvTipo');if(clProv)clProv.value='';
+  toggleProvTipo();
+}
+
+// Aggiorna dbSaveCliente per nuovi campi
+async function dbSaveCliente(c){
+  const row={
+    nome:c.nome,provenienza:c.provenienza||null,anno:c.anno||null,
+    contatto:c.contatto||null,note:c.note||null,
+    created_by:currentUser.id
+  };
+  // Campi extra — salviamo in note JSON se colonne non esistono ancora
+  const extra={cognome:c.cognome,azienda:c.azienda,telefono:c.telefono,email:c.email,settore:c.settore};
+  row.note=(c.note||'')+'||EXTRA:'+JSON.stringify(extra);
+  if(c._dbId){
+    const {error}=await sbClient.from('clienti').update(row).eq('id',c._dbId);
+    if(error)throw error;return c._dbId;
+  }else{
+    const {data,error}=await sbClient.from('clienti').insert(row).select().single();
+    if(error)throw error;return data.id;
+  }
+}
+
+// Parsing extra dati cliente
+function parseClienteExtra(c){
+  if(!c.note||!c.note.includes('||EXTRA:'))return c;
+  try{
+    const parts=c.note.split('||EXTRA:');
+    c.note=parts[0];
+    const extra=JSON.parse(parts[1]);
+    return{...c,...extra};
+  }catch(e){return c;}
+}
+
+// ============================================================
+// CONTRATTO — piano di pagamento
+// ============================================================
+// (moved below)
+
+function buildPianoPagamento(){
+  const tipo=document.getElementById('cPagamentoTipo').value;
+  const inizio=document.getElementById('cInizio').value;
+  const scadenza=document.getElementById('cScadenza').value;
+  const importoMensile=parseFloat(document.getElementById('cImporto').value)||0;
+  const primaScad=document.getElementById('cPagamentoPrima').value||inizio;
+  if(!primaScad||!importoMensile){document.getElementById('pianoPagamentoPreview').style.display='none';return;}
+
+  // Calcola intervallo mesi tra rate
+  const intervalloMesi={mensile:1,trimestrale:3,semestrale:6,annuale:12,personalizzato:1}[tipo]||1;
+  // Importo per rata
+  const rataInput=parseFloat(document.getElementById('cPagamentoRata').value)||0;
+  const importoRata=rataInput||importoMensile*intervalloMesi;
+
+  // Calcola numero rate dalla durata
+  let nRate=1;
+  if(inizio&&scadenza){
+    const ms=(new Date(scadenza)-new Date(inizio))/(1000*60*60*24*30);
+    nRate=Math.max(1,Math.round(ms/intervalloMesi));
+  }
+
+  pianoPagamentoRate=[];
+  const prima=new Date(primaScad);
+  for(let i=0;i<nRate;i++){
+    const d=new Date(prima);
+    d.setMonth(d.getMonth()+i*intervalloMesi);
+    pianoPagamentoRate.push({
+      n:i+1,
+      data:d.toISOString().slice(0,10),
+      importo:importoRata,
+      pagato:false
+    });
+  }
+
+  const prev=document.getElementById('pianoPagamentoPreview');
+  const rp=document.getElementById('ratePreview');
+  prev.style.display='block';
+  rp.innerHTML=pianoPagamentoRate.map((r,i)=>`
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 10px;border-radius:8px;margin-bottom:4px;background:var(--surface);border:1px solid var(--border)">
+      <span style="font-size:12.5px;font-weight:600;color:var(--text2)">Rata ${r.n}</span>
+      <span style="font-size:12.5px;color:var(--text3)">${fmtDate(r.data)}</span>
+      <span style="font-size:13px;font-weight:700;color:var(--text)">${fmtEuro(r.importo)}</span>
+    </div>
+  `).join('');
+}
+
+function renderPianoPagamento(contratto){
+  const rate=contratto.pianoPagamento||[];
+  if(!rate.length)return'<div style="color:var(--text3);font-size:13px">Nessun piano di pagamento definito</div>';
+  const tot=rate.reduce((s,r)=>s+r.importo,0);
+  const pagato=rate.filter(r=>r.pagato).reduce((s,r)=>s+r.importo,0);
+  const pct=tot>0?Math.round(pagato/tot*100):0;
+  return`
+    <div style="background:var(--surface);border-radius:12px;padding:16px;border:1px solid var(--border)">
+      <div style="display:flex;justify-content:space-between;margin-bottom:14px">
+        <div><div style="font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--text3);margin-bottom:4px">Incassato</div><div style="font-size:20px;font-weight:800;color:var(--green)">${fmtEuro(pagato)}</div></div>
+        <div><div style="font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--text3);margin-bottom:4px">Totale</div><div style="font-size:20px;font-weight:800;color:var(--text)">${fmtEuro(tot)}</div></div>
+        <div><div style="font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--text3);margin-bottom:4px">Da incassare</div><div style="font-size:20px;font-weight:800;color:var(--red)">${fmtEuro(tot-pagato)}</div></div>
+      </div>
+      <div class="pbar-bg" style="height:6px;margin-bottom:16px"><div class="pbar-fill" style="width:${pct}%;background:var(--green);height:6px"></div></div>
+      ${rate.map((r,i)=>`
+        <div style="display:flex;align-items:center;gap:12px;padding:9px 12px;border-radius:9px;margin-bottom:5px;background:${r.pagato?'rgba(0,232,122,.07)':'var(--bg3)'};border:1px solid ${r.pagato?'rgba(0,232,122,.2)':'var(--border)'}">
+          <button onclick="toggleRata('${contratto.id}',${i})" style="width:22px;height:22px;border-radius:50%;border:2px solid ${r.pagato?'var(--green)':'var(--border2)'};background:${r.pagato?'var(--green)':'transparent'};cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#fff;font-size:12px">
+            ${r.pagato?'✓':''}
+          </button>
+          <span style="font-size:13px;font-weight:600;color:${r.pagato?'var(--green)':'var(--text)'}">Rata ${r.n}</span>
+          <span style="font-size:12.5px;color:var(--text3)">${fmtDate(r.data)}</span>
+          <span style="margin-left:auto;font-size:13px;font-weight:700;color:${r.pagato?'var(--green)':'var(--text)'}">${fmtEuro(r.importo)}</span>
+        </div>
+      `).join('')}
+    </div>
+  `;
+}
+
+async function toggleRata(contrattoId,rataIdx){
+  const c=db.contratti.find(x=>x.id===contrattoId);
+  if(!c||!c.pianoPagamento)return;
+  c.pianoPagamento[rataIdx].pagato=!c.pianoPagamento[rataIdx].pagato;
+  // Salva su Supabase
+  try{
+    await sbClient.from('contratti').update({piano_pagamento:JSON.stringify(c.pianoPagamento)}).eq('id',contrattoId);
+  }catch(e){console.warn('toggleRata',e);}
+  // Aggiorna modal se aperto
+  const ppContent=document.getElementById('ppContent');
+  if(ppContent)ppContent.innerHTML=renderPianoPagamento(c);
+  renderContratti();
+}
+
+function openPianoPagamento(contrattoId){
+  const c=db.contratti.find(x=>x.id===contrattoId);
+  if(!c)return;
+  document.getElementById('ppModalTitle').textContent='Piano pagamenti — '+getClienteNome(c.clienteId);
+  document.getElementById('ppContent').innerHTML=renderPianoPagamento(c);
+  openModal('modalPianoPagamento');
+}
+
+// ============================================================
+// FILTRI E ORDINAMENTO
+// ============================================================
+// (moved below)
+// (moved below)
+// (moved below)
+
+function sortContratti(field){
+  filtriContratti.sort=field;renderContratti();
+}
+function sortPreventivi(field){
+  filtriPreventivi.sort=field;renderPreventivi();
+}
+function filtroClientiSettore(s){
+  filtriClienti.settore=s;renderClienti();
+}
+
+function applyFiltriContratti(list){
+  let r=[...list];
+  if(filtriContratti.search)r=r.filter(c=>getClienteNome(c.clienteId).toLowerCase().includes(filtriContratti.search.toLowerCase()));
+  if(filtriContratti.sort==='scadenza')r.sort((a,b)=>new Date(a.scadenza)-new Date(b.scadenza));
+  else if(filtriContratti.sort==='valore')r.sort((a,b)=>(b.importo||0)-(a.importo||0));
+  else if(filtriContratti.sort==='cliente')r.sort((a,b)=>getClienteNome(a.clienteId).localeCompare(getClienteNome(b.clienteId)));
+  return r;
+}
+
+function applyFiltriPreventivi(list){
+  let r=[...list];
+  if(filtriPreventivi.stato!=='tutti')r=r.filter(p=>p.stato===filtriPreventivi.stato);
+  if(filtriPreventivi.search)r=r.filter(p=>(getClienteNome(p.clienteId)+(p.proposta||'')).toLowerCase().includes(filtriPreventivi.search.toLowerCase()));
+  if(filtriPreventivi.sort==='data')r.sort((a,b)=>new Date(b.data||0)-new Date(a.data||0));
+  else if(filtriPreventivi.sort==='importo')r.sort((a,b)=>(b.importo||0)-(a.importo||0));
+  else if(filtriPreventivi.sort==='cliente')r.sort((a,b)=>getClienteNome(a.clienteId).localeCompare(getClienteNome(b.clienteId)));
+  return r;
+}
+
+function applyFiltriClienti(list){
+  let r=[...list].map(parseClienteExtra);
+  if(filtriClienti.settore)r=r.filter(c=>c.settore===filtriClienti.settore);
+  if(filtriClienti.search)r=r.filter(c=>(c.nome||'').toLowerCase().includes(filtriClienti.search.toLowerCase()));
+  if(filtriClienti.sort==='nome')r.sort((a,b)=>(a.nome||'').localeCompare(b.nome||''));
+  else if(filtriClienti.sort==='valore')r.sort((a,b)=>valTot(b.id)-valTot(a.id));
+  return r;
+}
+
+// ============================================================
+// CANALI CHAT
+// ============================================================
+let currentCanaleId=null;
+let chatListeners={};
+
+function renderCanali(){
+  const list=document.getElementById('canaliList');
+  if(!list)return;
+  // Un canale per ogni cliente che ha almeno un contratto o è stato aggiunto manualmente
+  const cliConCanale=db.canaliClienti||[];
+  const clientiConContratto=[...new Set(db.contratti.map(c=>c.clienteId))];
+  const tutti=[...new Set([...cliConCanale,...clientiConContratto])];
+  if(!tutti.length){
+    list.innerHTML='<div style="padding:20px;text-align:center;color:var(--text3);font-size:13px">Nessun canale. Crea un cliente con contratto o aggiungi manualmente.</div>';
+    return;
+  }
+  list.innerHTML=tutti.map(cId=>{
+    const c=db.clienti.find(x=>x.id===cId);
+    if(!c)return'';
+    const init=(c.nome||'?')[0].toUpperCase();
+    const msgs=db.messaggiCanali?.[cId]||[];
+    const lastMsg=msgs[msgs.length-1];
+    const isActive=currentCanaleId===cId;
+    return`<div class="canale-item ${isActive?'active':''}" onclick="openCanale('${cId}')">
+      <div class="canale-av" style="background:var(--imp-purple)">${init}</div>
+      <div class="canale-info">
+        <div class="canale-name">${c.nome}</div>
+        <div class="canale-last">${lastMsg?lastMsg.text.slice(0,40):'Nessun messaggio'}</div>
+      </div>
+    </div>`;
+  }).filter(Boolean).join('');
+}
+
+async function openCanale(clienteId){
+  currentCanaleId=clienteId;
+  renderCanali();
+  const c=db.clienti.find(x=>x.id===clienteId);
+  const init=(c?.nome||'?')[0].toUpperCase();
+  const taskCliente=db.tasks.filter(t=>t.clienteId===clienteId);
+  const area=document.getElementById('canaliChatArea');
+  if(!area)return;
+  area.innerHTML=`
+    <div class="chat-header">
+      <div class="chat-header-av" style="background:var(--imp-purple)">${init}</div>
+      <div class="chat-header-info">
+        <div class="chat-header-name">${c?.nome||'Cliente'}</div>
+        <div class="chat-header-sub">${taskCliente.length} task · ${db.contratti.filter(x=>x.clienteId===clienteId).length} contratti</div>
+      </div>
+    </div>
+    <div class="chat-tabs">
+      <button class="chat-tab active" id="chatTabChat" onclick="switchChatTab('chat')">Chat</button>
+      <button class="chat-tab" id="chatTabTask" onclick="switchChatTab('task')">Task (${taskCliente.length})</button>
+    </div>
+    <div class="chat-body" id="chatBody"></div>
+    <div class="chat-footer" id="chatFooter">
+      <div class="chat-input-row">
+        <textarea id="chatInput" placeholder="Scrivi un messaggio..." rows="1" onkeydown="chatKeydown(event,'${clienteId}')"></textarea>
+        <button class="btn btn-primary btn-sm" onclick="inviaMsgCanale('${clienteId}')">
+          <span class="ic" data-ic="send" style="width:16px;height:16px"></span>
+        </button>
+      </div>
+    </div>
+  `;
+  hydrateIcons(area);
+  renderChatBody(clienteId);
+  subscribeChatRealtime(clienteId);
+}
+
+function switchChatTab(tab){
+  document.getElementById('chatTabChat')?.classList.toggle('active',tab==='chat');
+  document.getElementById('chatTabTask')?.classList.toggle('active',tab==='task');
+  const footer=document.getElementById('chatFooter');
+  if(footer)footer.style.display=tab==='chat'?'block':'none';
+  if(tab==='chat')renderChatBody(currentCanaleId);
+  else renderTaskBody(currentCanaleId);
+}
+
+function renderChatBody(clienteId){
+  const body=document.getElementById('chatBody');
+  if(!body)return;
+  const msgs=(db.messaggiCanali||{})[clienteId]||[];
+  if(!msgs.length){
+    body.innerHTML='<div style="text-align:center;color:var(--text3);padding:40px;font-size:13.5px">Nessun messaggio ancora. Inizia la conversazione!</div>';
+    return;
+  }
+  body.innerHTML=msgs.map(m=>{
+    const u=getTeamMember(m.authorId);
+    const isMine=m.authorId===currentUser.id;
+    return`<div class="msg-bubble ${isMine?'mine':''}">
+      <div class="msg-av" style="background:${u.color}">${u.initials}</div>
+      <div class="msg-content">
+        ${!isMine?`<div class="msg-name">${u.name}</div>`:''}
+        <div class="msg-text">${escapeHtml(m.text)}</div>
+        <div class="msg-time">${relTime(m.createdAt)}</div>
+      </div>
+    </div>`;
+  }).join('');
+  body.scrollTop=body.scrollHeight;
+}
+
+function renderTaskBody(clienteId){
+  const body=document.getElementById('chatBody');
+  if(!body)return;
+  const tasks=db.tasks.filter(t=>t.clienteId===clienteId);
+  if(!tasks.length){
+    body.innerHTML='<div style="text-align:center;color:var(--text3);padding:40px;font-size:13.5px">Nessuna task per questo cliente.<br><button class="btn btn-primary btn-sm" style="margin-top:12px" onclick="openModal(\'modalTask\')">+ Nuova task</button></div>';
+    return;
+  }
+  const order=['todo','progress','review','done'];
+  const sorted=[...tasks].sort((a,b)=>order.indexOf(a.status)-order.indexOf(b.status));
+  body.innerHTML=sorted.map(t=>{
+    const u=getTeamMember(t.assignedTo);
+    const statusColors={todo:'var(--text3)',progress:'var(--imp-blue)',review:'var(--amber)',done:'var(--green)'};
+    const statusLabel={todo:'Da fare',progress:'In corso',review:'In revisione',done:'Completata'};
+    return`<div class="canale-task-item" onclick="openTaskDetail('${t.id}')">
+      <div class="canale-task-check ${t.status==='done'?'done':''}" onclick="event.stopPropagation();quickCompleta('${t.id}')">
+        ${t.status==='done'?'✓':''}
+      </div>
+      <div style="flex:1;min-width:0">
+        <div style="font-size:13.5px;font-weight:600;color:${t.status==='done'?'var(--text3)':'var(--text)'};text-decoration:${t.status==='done'?'line-through':'none'}">${t.title}</div>
+        ${t.due?`<div style="font-size:11.5px;color:var(--text3);margin-top:3px">Scadenza: ${fmtDate(t.due)}</div>`:''}
+      </div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <span class="badge" style="font-size:10.5px;background:transparent;color:${statusColors[t.status]||'var(--text3)'};border:1px solid currentColor">${statusLabel[t.status]||t.status}</span>
+        <div class="task-av" style="background:${u.color};width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#fff">${u.initials}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+async function quickCompleta(taskId){
+  const t=db.tasks.find(x=>x.id===taskId);
+  if(!t)return;
+  const newStatus=t.status==='done'?'todo':'done';
+  t.status=newStatus;
+  try{await sbClient.from('tasks').update({status:newStatus}).eq('id',taskId);}catch(e){}
+  if(newStatus==='done'){
+    addNotif('Task completata: "'+t.title+'"','success','check');
+    // Notifica chi ha creato la task
+    if(t.createdBy&&t.createdBy!==currentUser.id){
+      try{await sbClient.from('notifiche').insert({user_id:t.createdBy,text:currentUser.name+' ha completato: "'+t.title+'"',type:'success',urgent:false});}catch(e){}
+    }
+  }
+  renderTaskBody(currentCanaleId);
+  buildTaskBadge();
+}
+
+async function inviaMsgCanale(clienteId){
+  const input=document.getElementById('chatInput');
+  const text=input?.value.trim();
+  if(!text)return;
+  input.value='';
+  const msg={id:uid(),clienteId,authorId:currentUser.id,text,createdAt:new Date().toISOString()};
+  if(!db.messaggiCanali)db.messaggiCanali={};
+  if(!db.messaggiCanali[clienteId])db.messaggiCanali[clienteId]=[];
+  db.messaggiCanali[clienteId].push(msg);
+  // Salva su Supabase
+  try{
+    await sbClient.from('messaggi').insert({
+      canale_id:clienteId, // usiamo clienteId come canale_id
+      author_id:currentUser.id,
+      content:text
+    });
+  }catch(e){console.warn('inviaMsgCanale',e);}
+  renderChatBody(clienteId);
+}
+
+function chatKeydown(e,clienteId){
+  if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();inviaMsgCanale(clienteId);}
+}
+
+function subscribeChatRealtime(clienteId){
+  if(chatListeners[clienteId])return;
+  chatListeners[clienteId]=sbClient.channel('chat-'+clienteId)
+    .on('postgres_changes',{event:'INSERT',schema:'public',table:'messaggi',filter:`canale_id=eq.${clienteId}`},(payload)=>{
+      const m=payload.new;
+      if(m.author_id===currentUser.id)return; // già aggiunto localmente
+      if(!db.messaggiCanali)db.messaggiCanali={};
+      if(!db.messaggiCanali[clienteId])db.messaggiCanali[clienteId]=[];
+      db.messaggiCanali[clienteId].push({id:m.id,clienteId,authorId:m.author_id,text:m.content,createdAt:m.created_at});
+      if(currentCanaleId===clienteId)renderChatBody(clienteId);
+      else addNotif('Nuovo messaggio in #'+getClienteNome(clienteId),'info','chat');
+    })
+    .subscribe();
+}
+
+async function loadMessaggi(){
+  try{
+    const {data:msgs}=await sbClient.from('messaggi').select('*').order('created_at',{ascending:true});
+    if(!msgs)return;
+    db.messaggiCanali={};
+    msgs.forEach(m=>{
+      const cId=m.canale_id;
+      if(!db.messaggiCanali[cId])db.messaggiCanali[cId]=[];
+      db.messaggiCanali[cId].push({id:m.id,clienteId:cId,authorId:m.author_id,text:m.content,createdAt:m.created_at});
+    });
+  }catch(e){console.warn('loadMessaggi',e);}
+}
+
+async function creaNuovoCanale(){
+  const cId=document.getElementById('nuovoCanaleCliente').value;
+  if(!cId){toast('Seleziona un cliente','','warn');return;}
+  if(!db.canaliClienti)db.canaliClienti=[];
+  if(!db.canaliClienti.includes(cId))db.canaliClienti.push(cId);
+  closeModal('modalNuovoCanale');
+  nav('canali',document.getElementById('nav-canali'));
+  openCanale(cId);
+}
+
+function filterCanali(q){
+  document.querySelectorAll('.canale-item').forEach(el=>{
+    const name=el.querySelector('.canale-name')?.textContent||'';
+    el.style.display=name.toLowerCase().includes(q.toLowerCase())?'':'none';
+  });
+}
+
+function escapeHtml(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+// ============================================================
+// TASK CALENDARIO GIORNALIERO
+// ============================================================
+function renderTaskCalendario(){
+  const cont=document.getElementById('taskCalBody');
+  if(!cont)return;
+  const oggi=new Date();
+  const giorni=7;
+  let html='';
+  for(let i=0;i<giorni;i++){
+    const d=new Date(oggi);d.setDate(oggi.getDate()+i);
+    const ds=d.toISOString().slice(0,10);
+    const isOggi=i===0;
+    const tasksGiorno=db.tasks.filter(t=>t.due===ds&&t.status!=='done');
+    html+=`<div style="margin-bottom:20px">
+      <div style="font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:${isOggi?'var(--imp-purple)':'var(--text3)'};margin-bottom:10px;padding:6px 12px;background:${isOggi?'var(--P-bg)':'transparent'};border-radius:8px;display:inline-block">
+        ${isOggi?'Oggi — ':''}${GIORNI[d.getDay()]} ${d.getDate()} ${MESI[d.getMonth()]}
+      </div>
+      ${tasksGiorno.length?tasksGiorno.map(t=>{
+        const u=getTeamMember(t.assignedTo);
+        const pColors={alta:'var(--red)',media:'var(--amber)',bassa:'var(--green)'};
+        return`<div style="display:flex;align-items:center;gap:12px;padding:11px 16px;background:var(--surface);border:1px solid var(--border);border-radius:10px;margin-bottom:6px;cursor:pointer" onclick="openTaskDetail('${t.id}')">
+          <span style="width:8px;height:8px;border-radius:50%;background:${pColors[t.priority]||'var(--amber)'};flex-shrink:0"></span>
+          <span style="flex:1;font-size:13.5px;font-weight:600;color:var(--text)">${t.title}</span>
+          <span style="font-size:12px;color:var(--text3)">${getClienteNome(t.clienteId)}</span>
+          <div style="width:24px;height:24px;border-radius:50%;background:${u.color};display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#fff">${u.initials}</div>
+        </div>`;
+      }).join(''):'<div style="color:var(--text3);font-size:13px;padding:8px 12px">Nessuna task in scadenza</div>'}
+    </div>`;
+  }
+  cont.innerHTML=html;
+}
+
+
+
+
+// ============================================================
+// SWITCH TASK VIEW (Kanban / Calendario)
+// ============================================================
+function switchTaskView(view, btn) {
+  document.querySelectorAll('#page-tasks .tab-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  const kv = document.getElementById('taskViewKanban');
+  const cv = document.getElementById('taskViewCalendario');
+  if (view === 'kanban') {
+    if (kv) kv.style.display = '';
+    if (cv) cv.style.display = 'none';
+    renderTasks();
+  } else {
+    if (kv) kv.style.display = 'none';
+    if (cv) cv.style.display = 'block';
+    renderTaskCalendario();
+  }
+}
+
+// ============================================================
+// RENDER CLIENTI — con filtri settore
+// ============================================================
+// (see below)
+
+function renderClienti() {
+  const list = applyFiltriClienti(db.clienti);
+  // Chip filtro settore
+  const filtroRow = document.getElementById('filtroSettoreRow');
+  if (filtroRow) {
+    filtroRow.innerHTML = '<div class="chip-row">' +
+      ['', ...SETTORI].map(s => `<button class="chip ${filtriClienti.settore === s ? 'active' : ''}" onclick="filtroClientiSettore('${s}')">${s || 'Tutti'}</button>`).join('') +
+      '</div>';
+  }
+  renderClientiTable(list);
+}
+
+function renderClientiTable(list) {
+  const el = document.getElementById('tbodyClienti');
+  if (!el) return;
+  el.innerHTML = list.length ? list.map(c => {
+    const extra = parseClienteExtra({...c});
+    return `<tr>
+      <td><div style="font-weight:700;color:var(--text)">${extra.nome || '—'}</div>${extra.azienda ? `<div style="font-size:11.5px;color:var(--text3)">${extra.azienda}</div>` : ''}</td>
+      <td>${extra.settore ? `<span class="badge badge-blue">${extra.settore}</span>` : '—'}</td>
+      <td>${extra.provenienza || '—'}</td>
+      <td style="font-size:12.5px">${extra.telefono ? `📞 ${extra.telefono}` : ''}${extra.telefono && extra.email ? '<br>' : ''}${extra.email ? `✉ ${extra.email}` : ''}${!extra.telefono && !extra.email ? (extra.contatto || '—') : ''}</td>
+      <td><span class="badge badge-gray">${extra.anno || '—'}</span></td>
+      <td style="font-weight:700;color:var(--imp-teal)">${fmtEuro(valTot(c.id))}</td>
+      <td>
+        <button class="btn btn-ghost btn-xs" onclick="openCanaleCliente('${c.id}')" title="Apri canale" style="font-size:16px">💬</button>
+      </td>
+    </tr>`;
+  }).join('') : `<tr><td colspan="7" style="text-align:center;padding:30px;color:var(--text3)">Nessun cliente. Aggiungine uno con "+ Nuovo cliente".</td></tr>`;
+}
+
+function filtroClientiSettore(s) {
+  filtriClienti.settore = s;
+  renderClienti();
+}
+
+function openCanaleCliente(cId) {
+  nav('canali', document.getElementById('nav-canali'));
+  setTimeout(() => openCanale(cId), 150);
+}
+
+// ============================================================
+// FILTRI E ORDINAMENTO
+// ============================================================
+let filtriContratti = {sort: 'scadenza', search: ''};
+let filtriPreventivi = {sort: 'data', stato: 'tutti', search: ''};
+let filtriClienti = {sort: 'nome', settore: '', search: ''};
+
+function applyFiltriContratti(list) {
+  let r = [...list];
+  if (filtriContratti.search) r = r.filter(c => getClienteNome(c.clienteId).toLowerCase().includes(filtriContratti.search.toLowerCase()));
+  if (filtriContratti.sort === 'scadenza') r.sort((a, b) => new Date(a.scadenza) - new Date(b.scadenza));
+  else if (filtriContratti.sort === 'valore') r.sort((a, b) => (b.importo || 0) - (a.importo || 0));
+  else if (filtriContratti.sort === 'cliente') r.sort((a, b) => getClienteNome(a.clienteId).localeCompare(getClienteNome(b.clienteId)));
+  return r;
+}
+
+function applyFiltriClienti(list) {
+  let r = list.map(c => parseClienteExtra({...c}));
+  if (filtriClienti.settore) r = r.filter(c => c.settore === filtriClienti.settore);
+  if (filtriClienti.search) r = r.filter(c => (c.nome || '').toLowerCase().includes(filtriClienti.search.toLowerCase()));
+  if (filtriClienti.sort === 'nome') r.sort((a, b) => (a.nome || '').localeCompare(b.nome || ''));
+  else if (filtriClienti.sort === 'valore') r.sort((a, b) => valTot(b.id) - valTot(a.id));
+  return r;
+}
+
+// ============================================================
+// PIANO PAGAMENTO
+// ============================================================
+let pianoPagamentoRate = [];
+
+function buildPianoPagamento() {
+  const tipo = document.getElementById('cPagamentoTipo')?.value || 'mensile';
+  const inizio = document.getElementById('cInizio')?.value;
+  const scadenza = document.getElementById('cScadenza')?.value;
+  const importoMensile = parseFloat(document.getElementById('cImporto')?.value) || 0;
+  const primaScad = document.getElementById('cPagamentoPrima')?.value || inizio;
+  if (!primaScad || !importoMensile) { document.getElementById('pianoPagamentoPreview').style.display = 'none'; return; }
+  const intervalloMesi = {mensile: 1, trimestrale: 3, semestrale: 6, annuale: 12, personalizzato: 1}[tipo] || 1;
+  const rataInput = parseFloat(document.getElementById('cPagamentoRata')?.value) || 0;
+  const importoRata = rataInput || importoMensile * intervalloMesi;
+  let nRate = 1;
+  if (inizio && scadenza) {
+    const ms = (new Date(scadenza) - new Date(inizio)) / (1000 * 60 * 60 * 24 * 30);
+    nRate = Math.max(1, Math.round(ms / intervalloMesi));
+  }
+  pianoPagamentoRate = [];
+  const prima = new Date(primaScad);
+  for (let i = 0; i < nRate; i++) {
+    const d = new Date(prima);
+    d.setMonth(d.getMonth() + i * intervalloMesi);
+    pianoPagamentoRate.push({n: i + 1, data: d.toISOString().slice(0, 10), importo: importoRata, pagato: false});
+  }
+  const prev = document.getElementById('pianoPagamentoPreview');
+  const rp = document.getElementById('ratePreview');
+  if (prev) prev.style.display = 'block';
+  if (rp) rp.innerHTML = pianoPagamentoRate.map(r => `
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 10px;border-radius:8px;margin-bottom:4px;background:var(--surface);border:1px solid var(--border)">
+      <span style="font-size:12.5px;font-weight:600;color:var(--text2)">Rata ${r.n}</span>
+      <span style="font-size:12.5px;color:var(--text3)">${fmtDate(r.data)}</span>
+      <span style="font-size:13px;font-weight:700;color:var(--text)">${fmtEuro(r.importo)}</span>
+    </div>`).join('');
+}
+
+function renderPianoPagamento(contratto) {
+  const rate = contratto.pianoPagamento || [];
+  if (!rate.length) return '<div style="color:var(--text3);font-size:13px;padding:20px">Nessun piano di pagamento definito per questo contratto.</div>';
+  const tot = rate.reduce((s, r) => s + r.importo, 0);
+  const pagato = rate.filter(r => r.pagato).reduce((s, r) => s + r.importo, 0);
+  const pct = tot > 0 ? Math.round(pagato / tot * 100) : 0;
+  return `
+    <div style="background:var(--surface);border-radius:12px;padding:16px;border:1px solid var(--border)">
+      <div style="display:flex;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:12px">
+        <div><div style="font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--text3);margin-bottom:4px">Incassato</div><div style="font-size:20px;font-weight:800;color:var(--green)">${fmtEuro(pagato)}</div></div>
+        <div><div style="font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--text3);margin-bottom:4px">Totale</div><div style="font-size:20px;font-weight:800;color:var(--text)">${fmtEuro(tot)}</div></div>
+        <div><div style="font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--text3);margin-bottom:4px">Da incassare</div><div style="font-size:20px;font-weight:800;color:var(--red)">${fmtEuro(tot - pagato)}</div></div>
+      </div>
+      <div class="pbar-bg" style="height:6px;margin-bottom:16px"><div class="pbar-fill" style="width:${pct}%;background:var(--green);height:6px;border-radius:99px;transition:width .8s"></div></div>
+      ${rate.map((r, i) => `
+        <div style="display:flex;align-items:center;gap:12px;padding:9px 12px;border-radius:9px;margin-bottom:5px;background:${r.pagato ? 'rgba(0,204,106,.07)' : 'var(--bg3)'};border:1px solid ${r.pagato ? 'rgba(0,204,106,.2)' : 'var(--border)'}">
+          <button onclick="toggleRata('${contratto.id}',${i})" style="width:22px;height:22px;border-radius:50%;border:2px solid ${r.pagato ? 'var(--green)' : 'var(--border2)'};background:${r.pagato ? 'var(--green)' : 'transparent'};cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#fff;font-size:12px;font-weight:800">
+            ${r.pagato ? '✓' : ''}
+          </button>
+          <span style="font-size:13px;font-weight:600;color:${r.pagato ? 'var(--green)' : 'var(--text)'}">Rata ${r.n}</span>
+          <span style="font-size:12.5px;color:var(--text3)">${fmtDate(r.data)}</span>
+          <span style="margin-left:auto;font-size:13px;font-weight:700;color:${r.pagato ? 'var(--green)' : 'var(--text)'}">${fmtEuro(r.importo)}</span>
+        </div>`).join('')}
+    </div>`;
+}
+
+async function toggleRata(contrattoId, rataIdx) {
+  const c = db.contratti.find(x => x.id === contrattoId);
+  if (!c || !c.pianoPagamento) return;
+  c.pianoPagamento[rataIdx].pagato = !c.pianoPagamento[rataIdx].pagato;
+  try { await sbClient.from('contratti').update({piano_pagamento: JSON.stringify(c.pianoPagamento)}).eq('id', contrattoId); } catch(e) {}
+  const ppContent = document.getElementById('ppContent');
+  if (ppContent) ppContent.innerHTML = renderPianoPagamento(c);
+  renderContratti();
+}
+
+function openPianoPagamento(contrattoId) {
+  const c = db.contratti.find(x => x.id === contrattoId);
+  if (!c) return;
+  document.getElementById('ppModalTitle').textContent = 'Piano pagamenti — ' + getClienteNome(c.clienteId);
+  document.getElementById('ppContent').innerHTML = renderPianoPagamento(c);
+  openModal('modalPianoPagamento');
+}
+
+// ============================================================
+// PROVENIENZA LEAD (modal cliente)
+// ============================================================
+function toggleProvTipo() {
+  const v = document.getElementById('clProvTipo')?.value;
+  const campWrap = document.getElementById('clProvCampagnaWrap');
+  const refWrap = document.getElementById('clProvReferenteWrap');
+  const altroWrap = document.getElementById('clProvAltroWrap');
+  if (campWrap) campWrap.style.display = v === 'campagna' ? 'block' : 'none';
+  if (refWrap) refWrap.style.display = v === 'referente' ? 'block' : 'none';
+  if (altroWrap) altroWrap.style.display = v === 'altro' ? 'block' : 'none';
+}
+
+function populateProvCampagne() {
+  const sel = document.getElementById('clProvCampagna');
+  if (!sel) return;
+  sel.innerHTML = '<option value="">— seleziona campagna —</option>' +
+    db.campagne.map(c => `<option value="${c.id}">${c.nome} (${c.canale})</option>`).join('');
+}
+
+// ============================================================
+// SERVIZI CONTRATTO
+// ============================================================
+const SERVIZI_DEFAULT = [
+  'Social Media Management', 'Campagne Meta Ads', 'Campagne Google Ads',
+  'Sito Web', 'SEO', 'Foto & Video', 'Copywriting', 'Email Marketing',
+  'Consulenza Strategica', 'Google My Business'
+];
+let serviziSelezionati = [];
+
+function initServiziCheckbox() {
+  const wrap = document.getElementById('serviziCheckbox');
+  if (!wrap) return;
+  serviziSelezionati = [];
+  wrap.innerHTML = SERVIZI_DEFAULT.map(s => `
+    <div class="chip" id="srv_${s.replace(/[\s&\/]/g,'_')}" onclick="toggleServizio('${s}')">${s}</div>
+  `).join('');
+}
+
+function toggleServizio(nome) {
+  if (serviziSelezionati.includes(nome)) {
+    serviziSelezionati = serviziSelezionati.filter(x => x !== nome);
+  } else {
+    serviziSelezionati.push(nome);
+  }
+  const id = 'srv_' + nome.replace(/[\s&\/]/g, '_');
+  const el = document.getElementById(id);
+  if (el) el.classList.toggle('active', serviziSelezionati.includes(nome));
+}
+
+function aggiungiServizioCustom() {
+  const v = document.getElementById('cServizioCustom')?.value.trim();
+  if (!v) return;
+  if (!serviziSelezionati.includes(v)) serviziSelezionati.push(v);
+  const wrap = document.getElementById('serviziCheckbox');
+  if (wrap) {
+    const div = document.createElement('div');
+    div.className = 'chip active';
+    div.textContent = v;
+    div.onclick = () => { serviziSelezionati = serviziSelezionati.filter(x => x !== v); div.remove(); };
+    wrap.appendChild(div);
+  }
+  document.getElementById('cServizioCustom').value = '';
+}
+
+// ============================================================
+// OVERRIDE: salvaCliente con nuovi campi
+// ============================================================
+async function salvaCliente() {
+  const nome = document.getElementById('clNome')?.value.trim();
+  if (!nome) { toast('Campo obbligatorio', 'Inserisci almeno il nome', 'warn'); return; }
+  const cognome = document.getElementById('clCognome')?.value.trim() || '';
+  const azienda = document.getElementById('clAzienda')?.value.trim() || '';
+  const telefono = document.getElementById('clTelefono')?.value.trim() || '';
+  const email = document.getElementById('clEmail')?.value.trim() || '';
+  const settoreRaw = document.getElementById('clSettore')?.value || '';
+  const settore = settoreRaw === '_custom' ? (document.getElementById('clSettoreCustom')?.value.trim() || 'Altro') : settoreRaw;
+  const provTipo = document.getElementById('clProvTipo')?.value || '';
+  let provenienza = '';
+  if (provTipo === 'campagna') {
+    const cId = document.getElementById('clProvCampagna')?.value;
+    const cam = db.campagne.find(x => x.id === cId);
+    provenienza = cam ? cam.nome + ' (' + cam.canale + ')' : 'Campagna';
+  } else if (provTipo === 'referente') {
+    provenienza = 'Referente: ' + (document.getElementById('clProvReferente')?.value.trim() || '—');
+  } else if (provTipo === 'altro') {
+    provenienza = document.getElementById('clProvAltro')?.value.trim() || 'Altro';
+  }
+  const nomeCompleto = nome + (cognome ? ' ' + cognome : '');
+  const extra = JSON.stringify({cognome, azienda, telefono, email, settore, provTipo});
+  const c = {
+    nome: nomeCompleto, cognome, azienda, telefono, email, settore, provenienza,
+    anno: parseInt(document.getElementById('clAnno')?.value) || new Date().getFullYear(),
+    note: (document.getElementById('clNote')?.value || '') + '||EXTRA:' + extra,
+    contatto: email || telefono
+  };
+  try {
+    const row = {nome: c.nome, provenienza: c.provenienza || null, anno: c.anno, contatto: c.contatto || null, note: c.note, created_by: currentUser.id};
+    const {data: saved, error} = await sbClient.from('clienti').insert(row).select().single();
+    if (error) throw error;
+    c.id = saved.id; c._dbId = saved.id;
+    db.clienti.unshift(c);
+    closeModal('modalCliente');
+    renderClienti(); populateSelects();
+    toast('Cliente aggiunto', nomeCompleto + (azienda ? ' · ' + azienda : ''), 'success');
+    ['clNome','clCognome','clAzienda','clTelefono','clEmail','clNote','clProvReferente','clProvAltro'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+    const clA = document.getElementById('clAnno'); if (clA) clA.value = new Date().getFullYear();
+    const clS = document.getElementById('clSettore'); if (clS) clS.value = '';
+    const clP = document.getElementById('clProvTipo'); if (clP) clP.value = '';
+    toggleProvTipo();
+  } catch(e) { toast('Errore salvataggio', e.message, 'alert'); }
+}
+
+function parseClienteExtra(c) {
+  if (!c.note || !c.note.includes('||EXTRA:')) return c;
+  try {
+    const parts = c.note.split('||EXTRA:');
+    c.note = parts[0];
+    const extra = JSON.parse(parts[1]);
+    return {...c, ...extra};
+  } catch(e) { return c; }
+}
+
+// ============================================================
+// OVERRIDE: salvaContratto con piano pagamento e servizi
+// ============================================================
+async function salvaContratto() {
+  const clienteId = document.getElementById('cCliente')?.value;
+  if (!clienteId) { alert('Seleziona un cliente'); return; }
+  const scadenza = document.getElementById('cScadenza')?.value;
+  if (!scadenza) { alert('Inserisci la data di scadenza'); return; }
+  const c = {
+    clienteId,
+    canaleSorgente: document.getElementById('cCanaleSorgente')?.value || '',
+    servizi: [...serviziSelezionati],
+    social: document.getElementById('cSocial')?.value === 'si',
+    campagne: document.getElementById('cCampagne')?.value === 'si',
+    importo: parseFloat(document.getElementById('cImporto')?.value) || 0,
+    inizio: document.getElementById('cInizio')?.value || null,
+    scadenza,
+    rinnovo: document.getElementById('cRinnovo')?.value || 'da_contattare',
+    note: document.getElementById('cNote')?.value || '',
+    pagamentoTipo: document.getElementById('cPagamentoTipo')?.value || 'mensile',
+    pianoPagamento: pianoPagamentoRate.length ? [...pianoPagamentoRate] : []
+  };
+  try {
+    const row = {
+      cliente_id: c.clienteId, social: c.social, campagne: c.campagne,
+      importo: c.importo, inizio: c.inizio, scadenza: c.scadenza,
+      rinnovo: c.rinnovo, note: c.note, created_by: currentUser.id,
+      piano_pagamento: c.pianoPagamento.length ? JSON.stringify(c.pianoPagamento) : null
+    };
+    const {data: saved, error} = await sbClient.from('contratti').insert(row).select().single();
+    if (error) throw error;
+    c.id = saved.id; c._dbId = saved.id;
+    db.contratti.unshift(c);
+    closeModal('modalContratto');
+    renderContratti(); renderDashboard(); buildAlertBadge();
+    serviziSelezionati = []; pianoPagamentoRate = [];
+    toast('Contratto salvato', getClienteNome(c.clienteId) + ' — ' + fmtEuro(c.importo) + '/mese', 'success');
+  } catch(e) { toast('Errore salvataggio', e.message, 'alert'); }
+}
+
+// ============================================================
+// OVERRIDE: openModal con init servizi e provenienza
+// ============================================================
+const _openModalBase = openModal;
+function openModal(id) {
+  _openModalBase(id);
+  if (id === 'modalContratto') {
+    initServiziCheckbox();
+    serviziSelezionati = [];
+    pianoPagamentoRate = [];
+    const pp = document.getElementById('pianoPagamentoPreview');
+    if (pp) pp.style.display = 'none';
+    const cr = document.getElementById('contrattoRiepilogo');
+    if (cr) cr.style.display = 'none';
+  }
+  if (id === 'modalCliente') {
+    populateProvCampagne();
+    toggleProvTipo();
+    const w = document.getElementById('clSettoreCustomWrap');
+    if (w) w.style.display = 'none';
+  }
+  if (id === 'modalNuovoCanale') {
+    const sel = document.getElementById('nuovoCanaleCliente');
+    if (sel) sel.innerHTML = db.clienti.map(c => `<option value="${c.id}">${c.nome}</option>`).join('');
+  }
+}
+
+// settore custom toggle
+document.addEventListener('change', e => {
+  if (e.target.id === 'clSettore') {
+    const w = document.getElementById('clSettoreCustomWrap');
+    if (w) w.style.display = e.target.value === '_custom' ? 'block' : 'none';
+  }
+});
+
+// ============================================================
+// CONTRATTI TABLE con piano pagamento
+// ============================================================
+const _renderContrattiTableBase = renderContrattiTable;
+function renderContrattiTable(list) {
+  const sorted = applyFiltriContratti(list);
+  const el = document.getElementById('tbodyContratti');
+  if (!el) return;
+  el.innerHTML = sorted.length ? sorted.map(c => {
+    const dl = daysLeft(c.scadenza), ml = monthsLeft(c.scadenza);
+    const bc = dl < 0 ? 'badge-red' : dl <= 30 ? 'badge-red' : dl <= 60 ? 'badge-amber' : 'badge-green';
+    const lbl = dl < 0 ? 'Scaduto' : dl <= 30 ? dl + 'gg' : ml + ' mes' + (ml === 1 ? 'e' : 'i');
+    const rate = c.pianoPagamento || [];
+    const totPag = rate.filter(r => r.pagato).reduce((s, r) => s + r.importo, 0);
+    const totRate = rate.reduce((s, r) => s + r.importo, 0);
+    return `<tr>
+      <td style="font-weight:700;color:var(--text)">${getClienteNome(c.clienteId)}</td>
+      <td>${c.social ? '<span class="badge badge-green">✓</span>' : ''}</td>
+      <td>${c.campagne ? '<span class="badge badge-blue">✓</span>' : ''}</td>
+      <td style="font-weight:700;color:var(--text)">${fmtEuro(c.importo)}</td>
+      <td>${fmtDate(c.scadenza)}</td>
+      <td><span class="badge ${bc}">${lbl}</span></td>
+      <td>${badgeRinnovo(c.rinnovo)}</td>
+      <td>${rate.length ? `<button class="btn btn-ghost btn-xs" onclick="openPianoPagamento('${c.id}')"><span style="color:${totPag >= totRate && totRate > 0 ? 'var(--green)' : 'var(--amber)'}">${totRate > 0 ? Math.round(totPag / totRate * 100) : 0}%</span> pagato</button>` : '<span style="color:var(--text3);font-size:12px">—</span>'}</td>
+      <td><select style="font-size:11px;padding:4px 8px;border:1px solid var(--border);border-radius:6px;background:var(--surface);color:var(--text)" onchange="aggiornaRinnovo('${c.id}',this.value)"><option value="da_contattare" ${c.rinnovo === 'da_contattare' ? 'selected' : ''}>Da cont.</option><option value="in_trattativa" ${c.rinnovo === 'in_trattativa' ? 'selected' : ''}>In trattativa</option><option value="confermato" ${c.rinnovo === 'confermato' ? 'selected' : ''}>Confermato</option></select></td>
+    </tr>`;
+  }).join('') : `<tr><td colspan="9" style="text-align:center;padding:30px;color:var(--text3)">Nessun contratto. Aggiungine uno con "+ Nuovo contratto".</td></tr>`;
+}
+
+// ============================================================
+// CARICA MESSAGGI CHAT
+// ============================================================
+async function loadMessaggiChat() {
+  try {
+    const {data: msgs} = await sbClient.from('messaggi').select('*').order('created_at', {ascending: true});
+    if (!msgs) return;
+    db.messaggiCanali = {};
+    msgs.forEach(m => {
+      const cId = m.canale_id;
+      if (!db.messaggiCanali[cId]) db.messaggiCanali[cId] = [];
+      db.messaggiCanali[cId].push({id: m.id, clienteId: cId, authorId: m.author_id, text: m.content, createdAt: m.created_at});
+    });
+  } catch(e) { console.warn('loadMessaggiChat', e); }
+}
+
+
 // BOOT
 // ============================
-hydrateIcons();
-renderProfileGrid();
-if(window.innerWidth<768){const hb=document.getElementById('hamburger');if(hb)hb.style.display='flex';}
+document.addEventListener('DOMContentLoaded', async ()=>{
 
-// Controlla se c'è già una sessione attiva
-(async()=>{
+  hydrateIcons();
+  renderProfileGrid();
+  if(window.innerWidth<768){const hb=document.getElementById('hamburger');if(hb)hb.style.display='flex';}
+
+  // Controlla se c'è già una sessione attiva
   try{
-    await initSupabase();
-    const {data:{session}}=await supabase.auth.getSession();
+    const {data:{session}}=await sbClient.auth.getSession();
     if(session){
-      // Sessione esistente — carica profilo e accedi direttamente
-      const {data:profile}=await supabase.from('profiles').select('*').eq('id',session.user.id).single();
+      const {data:profile}=await sbClient.from('profiles').select('*').eq('id',session.user.id).single();
       if(profile){
         currentUser={
           id:session.user.id,
@@ -3564,18 +4777,47 @@ if(window.innerWidth<768){const hb=document.getElementById('hamburger');if(hb)hb
         document.getElementById('loginWrap').style.display='none';
         document.getElementById('app').style.display='flex';
         await loadFromSupabase();
+        await loadMessaggi();
         initApp();
         startRealtimeListeners();
         console.log('[Auth] Sessione ripristinata per',currentUser.name);
       }
     }
   }catch(e){
-    console.warn('[Auth] Nessuna sessione attiva');
+    console.warn('[Auth] Nessuna sessione attiva:', e.message);
   }
-})();
 
-console.log('%cImpactus CRM v4.0 — Supabase Edition','color:#CC00FF;font-size:16px;font-weight:900');
-console.log('%c✓ Connesso a Supabase: ctexrnfdlzaedpdfdahj.supabase.co','color:#00C9A7;font-size:12px');
+  console.log('%cImpactus CRM v4.0 — Supabase Edition','color:#CC00FF;font-size:16px;font-weight:900');
+  console.log('%c✓ Connesso a Supabase: ctexrnfdlzaedpdfdahj.supabase.co','color:#00C9A7;font-size:12px');
+
+});
 </script>
+
+<!-- Modal Nuovo Canale -->
+<div class="modal-bg" id="modalNuovoCanale">
+  <div class="modal" style="width:440px">
+    <div class="modal-title">Nuovo canale cliente</div>
+    <div class="field"><label>Cliente</label><select id="nuovoCanaleCliente"></select></div>
+    <div style="font-size:13px;color:var(--text2);background:var(--bg3);border-radius:10px;padding:12px;border:1px solid var(--border)">
+      Viene creata una stanza dedicata per questo cliente con chat del team e vista task.
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modalNuovoCanale')">Annulla</button>
+      <button class="btn btn-primary" onclick="creaNuovoCanale()">Crea canale</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Piano Pagamento Dettaglio -->
+<div class="modal-bg" id="modalPianoPagamento">
+  <div class="modal" style="width:640px">
+    <div class="modal-title" id="ppModalTitle">Piano di pagamento</div>
+    <div id="ppContent"></div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modalPianoPagamento')">Chiudi</button>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
